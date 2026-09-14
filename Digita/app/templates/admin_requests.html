@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="description"
+      content="Digital Evidence Management System - Registration Requests"
+    />
+
+    <title>Secure Evidence | Registration Requests</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/admin_requests.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="cyber-background">
+      <div class="grid-overlay"></div>
+
+      <div class="glow glow-one"></div>
+      <div class="glow glow-two"></div>
+
+      <!-- ============================================================
+           Top Bar
+           ============================================================ -->
+
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-icon" aria-hidden="true">📨</div>
+
+          <div class="brand-text">
+            <h1>Secure Evidence</h1>
+
+            <span>Registration Requests</span>
+          </div>
+        </div>
+
+        <div class="user-area">
+          <div class="user-info">
+            <strong>{{ current_user.username }}</strong>
+
+            <span class="role-badge"> {{ current_user.role }} </span>
+          </div>
+
+          <a href="{{ url_for('admin.users') }}" class="back-btn"> Users </a>
+        </div>
+      </header>
+
+      <!-- ============================================================
+           Main
+           ============================================================ -->
+
+      <main class="requests-container">
+        <!-- Page Header -->
+        <section class="page-header">
+          <div>
+            <h2>Registration Requests</h2>
+
+            <p>Review new account requests and assign their final role.</p>
+          </div>
+
+          <a href="{{ url_for('admin.users') }}" class="secondary-btn">
+            User Management
+          </a>
+        </section>
+
+        <!-- ============================================================
+             Flash Messages
+             ============================================================ -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %}
+
+        <section class="messages" aria-live="polite" aria-atomic="true">
+          {% for category, message in messages %}
+
+          <div class="message {{ category }}">
+            <span class="message-icon" aria-hidden="true">
+              {% if category == "success" %} ✓ {% elif category == "danger" or
+              category == "error" %} ! {% else %} ⚠ {% endif %}
+            </span>
+
+            <span>{{ message }}</span>
+          </div>
+
+          {% endfor %}
+        </section>
+
+        {% endif %} {% endwith %}
+
+        <!-- ============================================================
+             Request Summary
+             ============================================================ -->
+
+        <section class="summary-grid">
+          <div class="summary-card">
+            <span class="summary-label"> Pending Requests </span>
+
+            <strong> {{ requests|length }} </strong>
+          </div>
+
+          <div class="summary-card">
+            <span class="summary-label"> Investigators </span>
+
+            <strong>
+              {{ requests |selectattr("requested_role", "equalto",
+              "investigator") |list |length }}
+            </strong>
+          </div>
+
+          <div class="summary-card">
+            <span class="summary-label"> Officers </span>
+
+            <strong>
+              {{ requests |selectattr("requested_role", "equalto", "officer")
+              |list |length }}
+            </strong>
+          </div>
+
+          <div class="summary-card">
+            <span class="summary-label"> Auditors </span>
+
+            <strong>
+              {{ requests |selectattr("requested_role", "equalto", "auditor")
+              |list |length }}
+            </strong>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             Requests
+             ============================================================ -->
+
+        <section class="requests-card">
+          <div class="card-header">
+            <div>
+              <h3>Pending Accounts</h3>
+
+              <p>New accounts waiting for administrator approval.</p>
+            </div>
+
+            <span class="record-count"> {{ requests|length }} pending </span>
+          </div>
+
+          {% if requests %}
+
+          <div class="requests-list">
+            {% for user in requests %}
+
+            <article class="request-card">
+              <!-- User Information -->
+              <div class="request-user">
+                <div class="avatar">{{ user.username[0]|upper }}</div>
+
+                <div class="user-details">
+                  <h4>{{ user.username }}</h4>
+
+                  <span> User ID: #{{ user.id }} </span>
+
+                  {% if user.created_at %}
+                  <small>
+                    Registered: {{ user.created_at.strftime("%Y-%m-%d %H:%M") }}
+                  </small>
+                  {% endif %}
+                </div>
+              </div>
+
+              <!-- Requested Role -->
+              <div class="requested-role-box">
+                <span class="field-label"> Requested Role </span>
+
+                <strong class="requested-role">
+                  {{ user.requested_role }}
+                </strong>
+              </div>
+
+              <!-- Password / Account Info -->
+              <div class="request-meta">
+                <div class="meta-item">
+                  <span>Account Status</span>
+
+                  <strong class="pending-status"> Pending </strong>
+                </div>
+
+                <div class="meta-item">
+                  <span>Active</span>
+
+                  <strong> No </strong>
+                </div>
+              </div>
+
+              <!-- Approval -->
+              <div class="approval-box">
+                <span class="field-label"> Final Role </span>
+
+                <form
+                  method="POST"
+                  action="{{ url_for('admin.approve_request', user_id=user.id) }}"
+                  class="approve-form"
+                >
+                  <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ csrf_token() }}"
+                  />
+
+<select name="role" required>
+  <option
+    value="investigator"
+    {% if user.requested_role == "investigator" %}
+      selected
+    {% endif %}
+  >
+    Investigator
+  </option>
+
+  <option
+    value="officer"
+    {% if user.requested_role == "officer" %}
+      selected
+    {% endif %}
+  >
+    Officer
+  </option>
+
+  <option
+    value="auditor"
+    {% if user.requested_role == "auditor" %}
+      selected
+    {% endif %}
+  >
+    Auditor
+  </option>
+</select> 
+
+                  <button type="submit" class="action-btn approve-btn">
+                    ✓ Approve
+                  </button>
+                </form>
+              </div>
+
+              <!-- Reject -->
+              <div class="reject-box">
+                <form
+                  method="POST"
+                  action="{{ url_for('admin.reject_request', user_id=user.id) }}"
+                  onsubmit="
+                    return confirm('Reject this registration request?');
+                  "
+                >
+                  <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ csrf_token() }}"
+                  />
+
+                  <button type="submit" class="action-btn reject-btn">
+                    ✕ Reject
+                  </button>
+                </form>
+              </div>
+            </article>
+
+            {% endfor %}
+          </div>
+
+          {% else %}
+
+          <!-- Empty State -->
+          <div class="empty-state">
+            <div class="empty-icon" aria-hidden="true">✓</div>
+
+            <h3>No Pending Requests</h3>
+
+            <p>There are no registration requests waiting for approval.</p>
+
+            <a href="{{ url_for('admin.users') }}" class="secondary-btn">
+              View Users
+            </a>
+          </div>
+
+          {% endif %}
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer">Digital Evidence Management System</footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,776 @@
+/* ============================================================
+   Secure Evidence
+   Dashboard
+   ============================================================ */
+
+:root {
+  --bg-main: #070b14;
+  --bg-panel: #0d1524;
+  --bg-panel-soft: #111b2d;
+
+  --primary: #4f8cff;
+  --primary-light: #7ca8ff;
+  --primary-dark: #315fc7;
+
+  --text-main: #f4f7ff;
+  --text-soft: #aab6ca;
+  --text-muted: #748199;
+
+  --border: rgba(79, 140, 255, 0.2);
+  --border-strong: rgba(79, 140, 255, 0.4);
+
+  --success: #43d6a0;
+  --danger: #ff697d;
+
+  --shadow: rgba(0, 0, 0, 0.42);
+}
+
+/* ============================================================
+   Reset
+   ============================================================ */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+
+  font-family: "Segoe UI", Arial, sans-serif;
+
+  color: var(--text-main);
+  background: var(--bg-main);
+}
+
+/* ============================================================
+   Background
+   ============================================================ */
+
+.cyber-background {
+  position: relative;
+
+  min-height: 100vh;
+
+  overflow-x: hidden;
+
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(79, 140, 255, 0.07),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at 90% 90%,
+      rgba(95, 111, 255, 0.05),
+      transparent 25%
+    ),
+    linear-gradient(145deg, #050810, #09101c 50%, #060a12);
+}
+
+/* ============================================================
+   Grid
+   ============================================================ */
+
+.grid-overlay {
+  position: fixed;
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: 0.55;
+
+  background-image:
+    linear-gradient(rgba(79, 140, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79, 140, 255, 0.018) 1px, transparent 1px);
+
+  background-size: 42px 42px;
+}
+
+/* ============================================================
+   Glow
+   ============================================================ */
+
+.glow {
+  position: fixed;
+
+  width: 280px;
+  height: 280px;
+
+  border-radius: 50%;
+
+  filter: blur(100px);
+
+  pointer-events: none;
+}
+
+.glow-one {
+  top: -140px;
+  left: -110px;
+
+  background: rgba(79, 140, 255, 0.08);
+}
+
+.glow-two {
+  right: -120px;
+  bottom: -140px;
+
+  background: rgba(108, 96, 255, 0.06);
+}
+
+/* ============================================================
+   Navigation
+   ============================================================ */
+
+.navbar {
+  position: relative;
+  z-index: 5;
+
+  width: min(1380px, calc(100% - 40px));
+
+  margin: 0 auto;
+  padding: 20px 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 24px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+/* ============================================================
+   Brand
+   ============================================================ */
+
+.brand {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  min-width: 0;
+}
+
+.brand-icon {
+  width: 48px;
+  height: 48px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(79, 140, 255, 0.1);
+
+  border: 1px solid var(--border-strong);
+
+  border-radius: 12px;
+
+  font-size: 21px;
+}
+
+.brand-text {
+  min-width: 0;
+}
+
+.brand-text h1 {
+  color: var(--text-main);
+
+  font-size: 22px;
+  font-weight: 800;
+
+  line-height: 1.15;
+}
+
+.brand-subtitle {
+  display: block;
+
+  margin-top: 4px;
+
+  color: var(--text-muted);
+
+  font-size: 12px;
+}
+
+/* ============================================================
+   User Area
+   ============================================================ */
+
+.user-area {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+}
+
+.user-info strong {
+  color: var(--text-main);
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.role-badge {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 5px 9px;
+
+  color: var(--primary-light);
+
+  background: rgba(79, 140, 255, 0.08);
+
+  border: 1px solid var(--border);
+
+  border-radius: 7px;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   Logout
+   ============================================================ */
+
+.logout-form {
+  margin: 0;
+}
+
+.logout-btn {
+  min-height: 40px;
+
+  padding: 0 14px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  color: #ffc4cb;
+
+  background: rgba(255, 105, 125, 0.06);
+
+  border: 1px solid rgba(255, 105, 125, 0.2);
+
+  border-radius: 9px;
+
+  cursor: pointer;
+
+  font-family: inherit;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.logout-btn:hover {
+  background: rgba(255, 105, 125, 0.11);
+
+  border-color: rgba(255, 105, 125, 0.35);
+
+  transform: translateY(-1px);
+}
+
+.logout-btn:active {
+  transform: translateY(0);
+}
+
+.logout-btn:focus-visible {
+  outline: 2px solid #ff8c9c;
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   Main Container
+   ============================================================ */
+
+.dashboard-container {
+  position: relative;
+  z-index: 2;
+
+  width: min(1380px, calc(100% - 40px));
+
+  margin: 0 auto;
+
+  padding: 40px 0 50px;
+}
+
+/* ============================================================
+   Welcome
+   ============================================================ */
+
+.welcome-section {
+  margin-bottom: 25px;
+
+  padding: 25px 26px;
+
+  background: linear-gradient(
+    155deg,
+    rgba(14, 21, 36, 0.97),
+    rgba(8, 13, 23, 0.98)
+  );
+
+  border: 1px solid var(--border);
+
+  border-radius: 15px;
+
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.23);
+}
+
+.welcome-content h2 {
+  color: var(--text-main);
+
+  font-size: clamp(28px, 4vw, 38px);
+
+  font-weight: 800;
+
+  line-height: 1.15;
+
+  letter-spacing: -0.6px;
+}
+
+.welcome-content p {
+  margin-top: 9px;
+
+  color: var(--text-soft);
+
+  font-size: 15px;
+
+  line-height: 1.6;
+}
+
+/* ============================================================
+   Role Banner
+   ============================================================ */
+
+.role-banner {
+  margin-bottom: 32px;
+
+  padding: 18px 20px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  background: linear-gradient(
+    155deg,
+    rgba(79, 140, 255, 0.08),
+    rgba(79, 140, 255, 0.025)
+  );
+
+  border: 1px solid var(--border);
+
+  border-radius: 13px;
+}
+
+.role-icon {
+  width: 48px;
+  height: 48px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(79, 140, 255, 0.08);
+
+  border: 1px solid var(--border);
+
+  border-radius: 11px;
+
+  font-size: 21px;
+}
+
+.role-content {
+  flex: 1;
+}
+
+.role-content strong {
+  color: var(--primary-light);
+
+  font-size: 16px;
+  font-weight: 800;
+
+  letter-spacing: 0.3px;
+}
+
+.role-lock {
+  color: var(--text-muted);
+
+  font-size: 18px;
+}
+
+/* ============================================================
+   Role Section
+   ============================================================ */
+
+.role-section {
+  margin-bottom: 30px;
+}
+
+.section-header {
+  margin-bottom: 17px;
+}
+
+.section-header h3 {
+  color: var(--text-main);
+
+  font-size: 21px;
+
+  font-weight: 800;
+}
+
+.section-header p {
+  margin-top: 6px;
+
+  color: var(--text-soft);
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+/* ============================================================
+   Dashboard Cards
+   ============================================================ */
+
+.dashboard-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 16px;
+}
+
+.dashboard-card {
+  position: relative;
+
+  min-height: 180px;
+
+  padding: 23px 24px;
+
+  display: flex;
+  align-items: flex-start;
+
+  gap: 16px;
+
+  color: inherit;
+
+  background: linear-gradient(
+    155deg,
+    rgba(14, 21, 36, 0.98),
+    rgba(8, 13, 23, 0.99)
+  );
+
+  border: 1px solid var(--border);
+
+  border-radius: 15px;
+
+  text-decoration: none;
+
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.24);
+
+  overflow: hidden;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.dashboard-card::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  background: linear-gradient(
+    120deg,
+    rgba(79, 140, 255, 0.055),
+    transparent 45%
+  );
+
+  opacity: 0;
+
+  transition: opacity 0.2s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-3px);
+
+  border-color: var(--border-strong);
+
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.3);
+}
+
+.dashboard-card:hover::before {
+  opacity: 1;
+}
+
+/* ============================================================
+   Card Icon
+   ============================================================ */
+
+.card-icon {
+  position: relative;
+  z-index: 1;
+
+  width: 50px;
+  height: 50px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  font-size: 21px;
+
+  border: 1px solid var(--border);
+}
+
+.upload-icon {
+  background: rgba(79, 140, 255, 0.09);
+}
+
+.evidence-icon {
+  background: rgba(91, 111, 255, 0.09);
+}
+
+.verify-icon {
+  background: rgba(67, 214, 160, 0.08);
+}
+
+.audit-icon {
+  background: rgba(156, 127, 255, 0.09);
+}
+
+/* ============================================================
+   Card Content
+   ============================================================ */
+
+.card-content {
+  position: relative;
+  z-index: 1;
+
+  flex: 1;
+
+  min-width: 0;
+}
+
+.card-content h4 {
+  color: var(--text-main);
+
+  font-size: 18px;
+
+  font-weight: 800;
+
+  line-height: 1.3;
+}
+
+.card-content p {
+  margin-top: 8px;
+
+  color: var(--text-soft);
+
+  font-size: 14px;
+
+  line-height: 1.65;
+}
+
+/* ============================================================
+   Card Arrow
+   ============================================================ */
+
+.card-arrow {
+  position: relative;
+  z-index: 1;
+
+  align-self: center;
+
+  color: var(--primary-light);
+
+  font-size: 22px;
+
+  transition: transform 0.2s ease;
+}
+
+.dashboard-card:hover .card-arrow {
+  transform: translateX(4px);
+}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+
+.footer {
+  position: relative;
+  z-index: 2;
+
+  width: min(1380px, calc(100% - 40px));
+
+  margin: 0 auto;
+
+  padding: 20px 0 26px;
+
+  display: flex;
+  justify-content: center;
+
+  color: var(--text-muted);
+
+  border-top: 1px solid rgba(255, 255, 255, 0.055);
+
+  font-size: 11px;
+
+  text-align: center;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+@media (max-width: 850px) {
+  .navbar {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .user-area {
+    width: 100%;
+
+    justify-content: space-between;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar,
+  .dashboard-container,
+  .footer {
+    width: min(100% - 22px, 1380px);
+  }
+
+  .navbar {
+    padding: 17px 0;
+  }
+
+  .dashboard-container {
+    padding: 27px 0 38px;
+  }
+
+  .brand-icon {
+    width: 42px;
+    height: 42px;
+
+    font-size: 19px;
+  }
+
+  .brand-text h1 {
+    font-size: 19px;
+  }
+
+  .welcome-section {
+    padding: 20px;
+
+    border-radius: 13px;
+  }
+
+  .welcome-content h2 {
+    font-size: 30px;
+  }
+
+  .welcome-content p {
+    font-size: 13px;
+  }
+
+  .role-banner {
+    padding: 15px;
+  }
+
+  .role-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .dashboard-card {
+    min-height: 160px;
+
+    padding: 20px;
+  }
+
+  .card-icon {
+    width: 44px;
+    height: 44px;
+
+    font-size: 19px;
+  }
+
+  .card-content h4 {
+    font-size: 17px;
+  }
+
+  .card-content p {
+    font-size: 13px;
+  }
+
+  .user-area {
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+  .user-info {
+    justify-content: space-between;
+  }
+
+  .logout-form,
+  .logout-btn {
+    width: 100%;
+  }
+}
+
+/* ============================================================
+   Reduced Motion
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}

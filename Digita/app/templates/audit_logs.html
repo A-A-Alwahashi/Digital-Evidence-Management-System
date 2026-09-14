@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="description" content="Secure Evidence Management System" />
+
+    <title>Secure Evidence | Audit Logs</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/audit_logs.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="cyber-background">
+      <div class="grid-overlay"></div>
+
+      <div class="glow glow-one"></div>
+      <div class="glow glow-two"></div>
+
+      <!-- ==========================================================
+         Navigation
+         ========================================================== -->
+
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-icon" aria-hidden="true">📋</div>
+
+          <div class="brand-text">
+            <h1>Secure Evidence</h1>
+
+            <span> Audit Logs </span>
+          </div>
+        </div>
+
+        <div class="user-area">
+          <div class="user-info">
+            <strong> {{ current_user.username }} </strong>
+
+            <span class="role-badge"> {{ current_user.role }} </span>
+          </div>
+
+          <a href="{{ url_for('dashboard.dashboard') }}" class="back-btn">
+            Dashboard
+          </a>
+        </div>
+      </header>
+
+      <!-- ==========================================================
+         Main
+         ========================================================== -->
+
+      <main class="audit-container">
+        <!-- ========================================================
+           Page Header
+           ======================================================== -->
+
+        <section class="page-header">
+          <div>
+            <h2>Audit Logs</h2>
+
+            <p>Review recorded system activity.</p>
+          </div>
+        </section>
+
+        <!-- ========================================================
+           Flash Messages
+           ======================================================== -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %}
+
+        <section class="messages" aria-live="polite" aria-atomic="true">
+          {% for category, message in messages %}
+
+          <div class="message {{ category }}">
+            <span class="message-icon" aria-hidden="true">
+              {% if category == "success" %} ✓ {% elif category == "danger" or
+              category == "error" %} ! {% else %} ⚠ {% endif %}
+            </span>
+
+            <span> {{ message }} </span>
+          </div>
+
+          {% endfor %}
+        </section>
+
+        {% endif %} {% endwith %}
+
+        <!-- ========================================================
+           Summary
+           ======================================================== -->
+
+        <section class="audit-summary">
+          <div class="summary-item">
+            <div class="summary-icon" aria-hidden="true">📋</div>
+
+            <div>
+              <span class="summary-label"> Recorded Events </span>
+
+              <strong>
+                {% if audit_logs %} {{ audit_logs|length }} {% else %} 0 {%
+                endif %}
+              </strong>
+            </div>
+          </div>
+
+          <div class="summary-item">
+            <div class="summary-icon" aria-hidden="true">🛡️</div>
+
+            <div>
+              <span class="summary-label"> Access Control </span>
+
+              <strong> Active </strong>
+            </div>
+          </div>
+
+          <div class="summary-item">
+            <div class="summary-icon" aria-hidden="true">🔎</div>
+
+            <div>
+              <span class="summary-label"> Integrity </span>
+
+              <strong> Active </strong>
+            </div>
+          </div>
+
+          <div class="summary-item">
+            <div class="summary-icon" aria-hidden="true">🔒</div>
+
+            <div>
+              <span class="summary-label"> Log Access </span>
+
+              <strong> Read Only </strong>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================
+           Audit Table
+           ======================================================== -->
+
+        <section class="table-box">
+          <div class="box-header">
+            <div>
+              <h3>Activity</h3>
+            </div>
+
+            <span class="read-only-badge"> Read Only </span>
+          </div>
+
+          {% if audit_logs %}
+
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Time</th>
+
+                  <th>User</th>
+
+                  <th>Role</th>
+
+                  <th>Action</th>
+
+                  <th>Result</th>
+
+                  <th>Evidence ID</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {% for log in audit_logs %}
+
+                <tr>
+                  <td>
+                    <span class="timestamp">
+                      {{ log.timestamp.strftime("%Y-%m-%d %H:%M:%S") }}
+                    </span>
+                  </td>
+
+                  <td>
+                    <div class="user-cell">
+                      <span class="user-icon" aria-hidden="true"> 👤 </span>
+
+                      <span>
+                        {% if log.user %} {{ log.user.username }} {% else %}
+                        System {% endif %}
+                      </span>
+                    </div>
+                  </td>
+
+                  <td>
+                    <span class="role-badge">
+                      {% if log.user %} {{ log.user.role }} {% else %} System {%
+                      endif %}
+                    </span>
+                  </td>
+
+                  <td>
+                    <span class="action-badge"> {{ log.action }} </span>
+                  </td>
+
+                  <td>
+                    {% if log.result in ["SUCCESS", "VERIFIED"] %}
+
+                    <span class="result success">
+                      <span class="result-icon" aria-hidden="true"> ✓ </span>
+
+                      {{ log.result }}
+                    </span>
+
+                    {% elif log.result in [ "DENIED", "TAMPER_DETECTED",
+                    "FILE_MISSING" ] %}
+
+                    <span class="result danger">
+                      <span class="result-icon" aria-hidden="true"> ! </span>
+
+                      {{ log.result }}
+                    </span>
+
+                    {% else %}
+
+                    <span class="result warning">
+                      <span class="result-icon" aria-hidden="true"> ⚠ </span>
+
+                      {{ log.result }}
+                    </span>
+
+                    {% endif %}
+                  </td>
+
+                  <td>
+                    {% if log.evidence_id %}
+
+                    <span class="evidence-id"> #{{ log.evidence_id }} </span>
+
+                    {% else %}
+
+                    <span class="empty-value"> — </span>
+
+                    {% endif %}
+                  </td>
+                </tr>
+
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          {% else %}
+
+          <!-- ====================================================
+               Empty State
+               ==================================================== -->
+
+          <div class="empty-state">
+            <div class="empty-icon" aria-hidden="true">📋</div>
+
+            <h3>No Audit Logs</h3>
+
+            <p>No activity has been recorded yet.</p>
+          </div>
+
+          {% endif %}
+        </section>
+      </main>
+
+      <!-- ==========================================================
+         Footer
+         ========================================================== -->
+
+      <footer class="footer">
+        <span> Secure Evidence Management System </span>
+      </footer>
+    </div>
+  </body>
+</html>

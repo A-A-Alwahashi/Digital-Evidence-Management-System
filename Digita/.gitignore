@@ -1,0 +1,100 @@
+# ============================================================
+# Secure Digital Evidence Management System
+# Git Ignore Rules
+# ============================================================
+
+# -------------------------
+# Environment / Secrets
+# -------------------------
+
+.env
+.env.*
+!.env.example
+
+# -------------------------
+# Python
+# -------------------------
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# -------------------------
+# Testing / Coverage
+# -------------------------
+
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# -------------------------
+# IDE / Editors
+# -------------------------
+
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# -------------------------
+# OS Files
+# -------------------------
+
+.DS_Store
+Thumbs.db
+
+# -------------------------
+# Build / Distribution
+# -------------------------
+
+build/
+dist/
+*.egg-info/
+
+# -------------------------
+# Database
+# -------------------------
+
+instance/
+*.db
+*.sqlite
+*.sqlite3
+
+# -------------------------
+# Logs
+# -------------------------
+
+logs/
+*.log
+
+# -------------------------
+# Cryptographic Keys
+# -------------------------
+
+keys/
+*.pem
+*.key
+*.crt
+*.cer
+
+# -------------------------
+# Encrypted Evidence Storage
+# -------------------------
+
+encrypted_storage/
+
+# -------------------------
+# Temporary / Backup Files
+# -------------------------
+
+*.tmp
+*.temp
+*.bak

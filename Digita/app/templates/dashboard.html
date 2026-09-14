@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="description"
+      content="Secure Evidence Management System Dashboard"
+    />
+
+    <title>Secure Evidence | Dashboard</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/dashboard.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="cyber-background">
+      <div class="grid-overlay"></div>
+
+      <div class="glow glow-one"></div>
+      <div class="glow glow-two"></div>
+
+      <!-- ==========================================================
+           Navigation
+           ========================================================== -->
+
+      <header class="navbar">
+        <div class="brand">
+          <div class="brand-icon" aria-hidden="true">🛡️</div>
+
+          <div class="brand-text">
+            <h1>Secure Evidence</h1>
+
+            <span class="brand-subtitle">
+              Digital Evidence Management System
+            </span>
+          </div>
+        </div>
+
+        <!-- Current User -->
+        <div class="user-area">
+          <div class="user-info">
+            <strong> {{ current_user.username }} </strong>
+
+            <span class="role-badge"> {{ current_user.role }} </span>
+          </div>
+
+          <form
+            method="POST"
+            action="{{ url_for('auth.logout') }}"
+            class="logout-form"
+          >
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+            <button type="submit" class="logout-btn">
+              <span aria-hidden="true">⎋</span>
+              Logout
+            </button>
+          </form>
+        </div>
+      </header>
+
+      <!-- ==========================================================
+           Main Dashboard
+           ========================================================== -->
+
+      <main class="dashboard-container">
+        <!-- Welcome -->
+        <section class="welcome-section">
+          <div class="welcome-content">
+            <h2>Welcome, {{ current_user.username }}</h2>
+
+            {% if current_user.role == "admin" %}
+            <p>Manage users and system access.</p>
+            {% elif current_user.role == "investigator" %}
+            <p>Manage your digital evidence.</p>
+            {% elif current_user.role == "officer" %}
+            <p>Review and verify submitted evidence.</p>
+            {% elif current_user.role == "auditor" %}
+            <p>Review recorded system activity.</p>
+            {% endif %}
+          </div>
+        </section>
+
+        <!-- Current Role -->
+        <section class="role-banner">
+          <div class="role-icon" aria-hidden="true">
+            {% if current_user.role == "admin" %} 🛡️ {% elif current_user.role
+            == "investigator" %} 🔎 {% elif current_user.role == "officer" %} 👮
+            {% elif current_user.role == "auditor" %} 📋 {% else %} 👤 {% endif
+            %}
+          </div>
+
+          <div class="role-content">
+            <strong> {{ current_user.role|upper }} </strong>
+          </div>
+
+          <div class="role-lock" aria-hidden="true">🔒</div>
+        </section>
+
+        <!-- ========================================================
+             Admin
+             ======================================================== -->
+
+        {% if current_user.role == "admin" %}
+
+        <section class="role-section">
+          <div class="section-header">
+            <div>
+              <h3>Administration</h3>
+
+              <p>Manage users and registration requests.</p>
+            </div>
+          </div>
+
+          <div class="dashboard-grid">
+            <!-- Registration Requests -->
+            <a
+              href="{{ url_for('admin.registration_requests') }}"
+              class="dashboard-card"
+            >
+              <div class="card-icon">📨</div>
+
+              <div class="card-content">
+                <h4>Registration Requests</h4>
+
+                <p>Review and approve new accounts.</p>
+              </div>
+
+              <span class="card-arrow" aria-hidden="true"> → </span>
+            </a>
+
+            <!-- User Management -->
+            <a href="{{ url_for('admin.users') }}" class="dashboard-card">
+              <div class="card-icon">👥</div>
+
+              <div class="card-content">
+                <h4>User Management</h4>
+
+                <p>Manage accounts, roles, and status.</p>
+              </div>
+
+              <span class="card-arrow" aria-hidden="true"> → </span>
+            </a>
+
+            <!-- Admin Dashboard -->
+            <a
+              href="{{ url_for('dashboard.admin_dashboard') }}"
+              class="dashboard-card"
+            >
+              <div class="card-icon">📊</div>
+
+              <div class="card-content">
+                <h4>Admin Overview</h4>
+
+                <p>View administration overview.</p>
+              </div>
+
+              <span class="card-arrow" aria-hidden="true"> → </span>
+            </a>
+          </div>
+        </section>
+
+        {% endif %}
+
+        <!-- ========================================================
+             Investigator
+             ======================================================== -->
+
+        {% if current_user.role == "investigator" %}
+
+        <section class="role-section">
+          <div class="section-header">
+            <div>
+              <h3>Evidence</h3>
+
+              <p>Upload and manage your evidence.</p>
+            </div>
+          </div>
+
+          <div class="dashboard-grid">
+            <!-- Upload -->
+            <a href="{{ url_for('evidence.upload') }}" class="dashboard-card">
+              <div class="card-icon upload-icon">📤</div>
+
+              <div class="card-content">
+                <h4>Upload Evidence</h4>
+
+                <p>Upload a new evidence file.</p>
+              </div>
+
+              <span class="card-arrow" aria-hidden="true"> → </span>
+            </a>
+
+            <!-- My Evidence -->
+            <a
+              href="{{ url_for('evidence.my_evidence') }}"
+              class="dashboard-card"
+            >
+              <div class="card-icon evidence-icon">📁</div>
+
+              <div class="card-content">
+                <h4>My Evidence</h4>
+
+                <p>View your uploaded evidence.</p>
+              </div>
+
+              <span class="card-arrow" aria-hidden="true"> → </span>
+            </a>
+          </div>
+        </section>
+
+        {% endif %}
+
+        <!-- ========================================================
+             Officer
+             ======================================================== -->
+
+        {% if current_user.role == "officer" %}
+
+        <section class="role-section">
+          <div class="section-header">
+            <div>
+              <h3>Evidence Review</h3>
+
+              <p>Review and verify submitted evidence.</p>
+            </div>
+          </div>
+
+          <div class="dashboard-grid">
+            <!-- All Evidence -->
+            <a
+              href="{{ url_for('evidence.all_evidence') }}"
+              class="dashboard-card"
+            >
+              <div class="card-icon evidence-icon">📂</div>
+
+              <div class="card-content">
+                <h4>All Evidence</h4>
+
+                <p>View available evidence records.</p>
+              </div>
+
+              <span class="card-arrow" aria-hidden="true"> → </span>
+            </a>
+          </div>
+        </section>
+
+        {% endif %}
+
+        <!-- ========================================================
+             Auditor
+             ======================================================== -->
+
+        {% if current_user.role == "auditor" %}
+
+        <section class="role-section">
+          <div class="section-header">
+            <div>
+              <h3>Audit Logs</h3>
+
+              <p>Review recorded system activity.</p>
+            </div>
+          </div>
+
+          <div class="dashboard-grid">
+            <a href="{{ url_for('audit.audit_logs') }}" class="dashboard-card">
+              <div class="card-icon audit-icon">📋</div>
+
+              <div class="card-content">
+                <h4>Audit Logs</h4>
+
+                <p>View system activity records.</p>
+              </div>
+
+              <span class="card-arrow" aria-hidden="true"> → </span>
+            </a>
+          </div>
+        </section>
+
+        {% endif %}
+      </main>
+
+      <!-- ==========================================================
+           Footer
+           ========================================================== -->
+
+      <footer class="footer">
+        <span> Secure Evidence Management System </span>
+      </footer>
+    </div>
+  </body>
+</html>

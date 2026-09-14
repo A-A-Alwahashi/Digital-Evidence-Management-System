@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="description"
+      content="Digital Evidence Management System - User Management"
+    />
+
+    <title>Secure Evidence | User Management</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/admin_users.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="cyber-background">
+      <div class="grid-overlay"></div>
+
+      <div class="glow glow-one"></div>
+      <div class="glow glow-two"></div>
+
+      <!-- ============================================================
+           Top Bar
+           ============================================================ -->
+
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-icon" aria-hidden="true">👥</div>
+
+          <div class="brand-text">
+            <h1>Secure Evidence</h1>
+            <span>User Management</span>
+          </div>
+        </div>
+
+        <div class="user-area">
+          <div class="user-info">
+            <strong>{{ current_user.username }}</strong>
+
+            <span class="role-badge"> {{ current_user.role }} </span>
+          </div>
+
+          <a href="{{ url_for('dashboard.admin_dashboard') }}" class="back-btn">
+            Dashboard
+          </a>
+        </div>
+      </header>
+
+      <!-- ============================================================
+           Main Content
+           ============================================================ -->
+
+      <main class="admin-container">
+        <!-- Page Header -->
+        <section class="page-header">
+          <div>
+            <h2>User Management</h2>
+
+            <p>Manage registered accounts, roles, and account status.</p>
+          </div>
+
+          <div class="header-actions">
+            <a
+              href="{{ url_for('admin.registration_requests') }}"
+              class="secondary-btn"
+            >
+              Registration Requests
+            </a>
+
+            <a href="{{ url_for('admin.create_user') }}" class="create-btn">
+              <span aria-hidden="true">＋</span>
+              Create User
+            </a>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             Flash Messages
+             ============================================================ -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %}
+
+        <section class="messages" aria-live="polite" aria-atomic="true">
+          {% for category, message in messages %}
+
+          <div class="message {{ category }}">
+            <span class="message-icon" aria-hidden="true">
+              {% if category == "success" %} ✓ {% elif category == "danger" or
+              category == "error" %} ! {% else %} ⚠ {% endif %}
+            </span>
+
+            <span>{{ message }}</span>
+          </div>
+
+          {% endfor %}
+        </section>
+
+        {% endif %} {% endwith %}
+
+        <!-- ============================================================
+             Summary
+             ============================================================ -->
+
+        <section class="summary-grid">
+          <div class="summary-card">
+            <span class="summary-label"> Total Users </span>
+
+            <strong>
+              {{ total_users if total_users is defined else users|length }}
+            </strong>
+          </div>
+
+          <div class="summary-card">
+            <span class="summary-label"> Pending Requests </span>
+
+            <strong>
+              {{ pending_count if pending_count is defined else 0 }}
+            </strong>
+          </div>
+
+          <div class="summary-card">
+            <span class="summary-label"> Active Users </span>
+
+            <strong>
+              {{ active_count if active_count is defined else 0 }}
+            </strong>
+          </div>
+
+          <div class="summary-card">
+            <span class="summary-label"> Suspended </span>
+
+            <strong>
+              {{ suspended_count if suspended_count is defined else 0 }}
+            </strong>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             Users Table
+             ============================================================ -->
+
+        <section class="users-card">
+          <div class="card-header">
+            <div>
+              <h3>Registered Users</h3>
+
+              <p>Accounts currently stored in the system.</p>
+            </div>
+
+            <span class="record-count"> {{ users|length }} users </span>
+          </div>
+
+          {% if users %}
+
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>User</th>
+                  <th>Requested Role</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Login Attempts</th>
+                  <th>Created</th>
+                  <th>Last Login</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {% for user in users %}
+
+                <tr>
+                  <!-- ID -->
+                  <td>
+                    <span class="user-id"> #{{ user.id }} </span>
+                  </td>
+
+                  <!-- User -->
+                  <td>
+                    <div class="user-cell">
+                      <div class="avatar">{{ user.username[0]|upper }}</div>
+
+                      <div class="user-details">
+                        <strong> {{ user.username }} </strong>
+
+                        {% if user.id == current_user.id %}
+                        <span class="current-user"> Current account </span>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </td>
+
+                  <!-- Requested Role -->
+                  <td>
+                    <span class="requested-role">
+                      {{ user.requested_role }}
+                    </span>
+                  </td>
+
+                  <!-- Current Role -->
+                  <td>
+                    <span class="role {{ user.role }}"> {{ user.role }} </span>
+                  </td>
+
+                  <!-- Account Status -->
+                  <td>
+                    {% if user.account_status == "pending" %}
+
+                    <span class="status pending">
+                      <span class="status-dot"></span>
+                      Pending
+                    </span>
+
+                    {% elif user.account_status == "approved" and user.is_active
+                    %}
+
+                    <span class="status active">
+                      <span class="status-dot"></span>
+                      Active
+                    </span>
+
+                    {% elif user.account_status == "suspended" %}
+
+                    <span class="status suspended">
+                      <span class="status-dot"></span>
+                      Suspended
+                    </span>
+
+                    {% elif user.account_status == "rejected" %}
+
+                    <span class="status rejected">
+                      <span class="status-dot"></span>
+                      Rejected
+                    </span>
+
+                    {% else %}
+
+                    <span class="status inactive">
+                      <span class="status-dot"></span>
+                      Inactive
+                    </span>
+
+                    {% endif %}
+                  </td>
+
+                  <!-- Failed Attempts -->
+                  <td>
+                    <span class="attempts">
+                      {{ user.failed_login_attempts }}
+                    </span>
+                  </td>
+
+                  <!-- Created -->
+                  <td>
+                    {% if user.created_at %}
+
+                    <span class="date-value">
+                      {{ user.created_at.strftime("%Y-%m-%d") }}
+                    </span>
+
+                    {% else %}
+
+                    <span class="muted">—</span>
+
+                    {% endif %}
+                  </td>
+
+                  <!-- Last Login -->
+                  <td>
+                    {% if user.last_login_at %}
+
+                    <span class="date-value">
+                      {{ user.last_login_at.strftime("%Y-%m-%d %H:%M") }}
+                    </span>
+
+                    {% else %}
+
+                    <span class="muted"> Never </span>
+
+                    {% endif %}
+                  </td>
+
+                  <!-- Actions -->
+                  <td>
+                    <div class="actions">
+                      <!-- Edit -->
+                      <a
+                        href="{{ url_for('admin.edit_user', user_id=user.id) }}"
+                        class="action-btn edit-btn"
+                      >
+                        Edit
+                      </a>
+
+                      <!-- Pending Request -->
+                      {% if user.account_status == "pending" %}
+
+                      <a
+                        href="{{ url_for('admin.registration_requests') }}"
+                        class="action-btn review-btn"
+                      >
+                        Review
+                      </a>
+
+                      {% endif %}
+
+                      <!-- Activate / Suspend -->
+                      {% if user.id != current_user.id and user.account_status
+                      != "pending" %}
+
+                      <form
+                        method="POST"
+                        action="{{ url_for('admin.toggle_user', user_id=user.id) }}"
+                        class="inline-form"
+                      >
+                        <input
+                          type="hidden"
+                          name="csrf_token"
+                          value="{{ csrf_token() }}"
+                        />
+
+                        {% if user.account_status == "suspended" or not
+                        user.is_active %}
+
+                        <button type="submit" class="action-btn enable-btn">
+                          Activate
+                        </button>
+
+                        {% else %}
+
+                        <button type="submit" class="action-btn disable-btn">
+                          Suspend
+                        </button>
+
+                        {% endif %}
+                      </form>
+
+                      {% endif %}
+
+                      <!-- Unlock -->
+                      {% if user.failed_login_attempts > 0 or user.locked_until
+                      %}
+
+                      <form
+                        method="POST"
+                        action="{{ url_for('admin.unlock_user', user_id=user.id) }}"
+                        class="inline-form"
+                      >
+                        <input
+                          type="hidden"
+                          name="csrf_token"
+                          value="{{ csrf_token() }}"
+                        />
+
+                        <button type="submit" class="action-btn unlock-btn">
+                          Unlock
+                        </button>
+                      </form>
+
+                      {% endif %}
+
+                      <!-- Delete -->
+                      {% if user.id != current_user.id %}
+
+                      <form
+                        method="POST"
+                        action="{{ url_for('admin.delete_user', user_id=user.id) }}"
+                        class="inline-form"
+                        onsubmit="return confirm('Delete this user account?');"
+                      >
+                        <input
+                          type="hidden"
+                          name="csrf_token"
+                          value="{{ csrf_token() }}"
+                        />
+
+                        <button type="submit" class="action-btn delete-btn">
+                          Delete
+                        </button>
+                      </form>
+
+                      {% endif %}
+                    </div>
+                  </td>
+                </tr>
+
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          {% else %}
+
+          <!-- Empty State -->
+          <div class="empty-state">
+            <div class="empty-icon" aria-hidden="true">👥</div>
+
+            <h3>No Users Found</h3>
+
+            <p>No user accounts are currently available.</p>
+
+            <a href="{{ url_for('admin.create_user') }}" class="create-btn">
+              <span aria-hidden="true">＋</span>
+              Create User
+            </a>
+          </div>
+
+          {% endif %}
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer">Digital Evidence Management System</footer>
+    </div>
+  </body>
+</html>

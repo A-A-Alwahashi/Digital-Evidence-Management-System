@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="description"
+      content="Digital Evidence Management System - Create Account"
+    />
+
+    <title>Secure Evidence | Create Account</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/signup.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="cyber-background">
+      <div class="grid-overlay"></div>
+
+      <div class="glow glow-one"></div>
+      <div class="glow glow-two"></div>
+
+      <main class="signup-container">
+        <section class="signup-box" aria-labelledby="signup-title">
+          <!-- Header -->
+          <header class="signup-header">
+            <div class="security-icon" aria-hidden="true">🛡️</div>
+
+            <h1 id="signup-title">Create Account</h1>
+
+            <p class="subtitle">Digital Evidence Management System</p>
+          </header>
+
+          <!-- Registration Form -->
+          <form
+            method="POST"
+            action="{{ url_for('auth.signup') }}"
+            class="signup-form"
+          >
+            <!-- CSRF Protection -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+            <!-- Username -->
+            <div class="form-group">
+              <label for="username">
+                <span class="label-icon" aria-hidden="true"> 👤 </span>
+
+                Username
+              </label>
+
+              <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Choose a username"
+                autocomplete="username"
+                minlength="3"
+                maxlength="30"
+                required
+                autofocus
+              />
+
+              <small class="input-hint"> 3–30 characters. </small>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+              <label for="password">
+                <span class="label-icon" aria-hidden="true"> 🔑 </span>
+
+                Password
+              </label>
+
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Create a password"
+                autocomplete="new-password"
+                minlength="8"
+                maxlength="128"
+                required
+              />
+
+              <small class="input-hint"> 8–128 characters. </small>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="form-group">
+              <label for="confirm_password">
+                <span class="label-icon" aria-hidden="true"> 🔐 </span>
+
+                Confirm Password
+              </label>
+
+              <input
+                type="password"
+                id="confirm_password"
+                name="confirm_password"
+                placeholder="Re-enter your password"
+                autocomplete="new-password"
+                minlength="8"
+                maxlength="128"
+                required
+              />
+            </div>
+
+            <!-- Requested Role -->
+            <div class="form-group">
+              <label for="requested_role">
+                <span class="label-icon" aria-hidden="true"> 🎭 </span>
+
+                Requested Role
+              </label>
+
+              <select id="requested_role" name="requested_role" required>
+                <option value="" disabled selected>Select a role</option>
+
+                <option value="investigator">Investigator</option>
+
+                <option value="officer">Officer</option>
+
+                <option value="auditor">Auditor</option>
+              </select>
+
+              <small class="input-hint">
+                The administrator will review your request.
+              </small>
+            </div>
+
+            <!-- Account Status -->
+            <div class="role-panel">
+              <div class="role-icon" aria-hidden="true">🕒</div>
+
+              <div class="role-content">
+                <span class="role-label"> Account Status </span>
+
+                <strong class="role-value"> Pending Approval </strong>
+
+                <small> Your account must be approved before login. </small>
+              </div>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="signup-btn">
+              <span class="button-icon" aria-hidden="true"> ➜ </span>
+
+              <span> Submit Registration </span>
+            </button>
+          </form>
+
+          <!-- Flash Messages -->
+          {% with messages = get_flashed_messages(with_categories=true) %} {% if
+          messages %}
+
+          <section class="messages" aria-live="polite" aria-atomic="true">
+            {% for category, message in messages %}
+
+            <div class="message {{ category }}">
+              <span class="message-icon" aria-hidden="true">
+                {% if category == "success" %} ✓ {% elif category == "danger" or
+                category == "error" %} ! {% else %} ⚠ {% endif %}
+              </span>
+
+              <span> {{ message }} </span>
+            </div>
+
+            {% endfor %}
+          </section>
+
+          {% endif %} {% endwith %}
+
+          <!-- Login -->
+          <div class="login-link">
+            <span> Already have an account? </span>
+
+            <a href="{{ url_for('auth.login') }}"> Sign in </a>
+          </div>
+
+          <!-- Footer -->
+          <footer class="security-footer">
+            Digital Evidence Management System
+          </footer>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

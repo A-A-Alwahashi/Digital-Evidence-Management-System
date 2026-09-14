@@ -1,0 +1,1082 @@
+/* ============================================================
+   Secure Evidence
+   My Evidence
+   ============================================================ */
+
+:root {
+  --bg-main: #070b14;
+  --bg-panel: #0e1524;
+  --bg-soft: #111b2d;
+
+  --primary: #4f8cff;
+  --primary-light: #7ca8ff;
+  --primary-dark: #315fc7;
+
+  --text-main: #f4f7ff;
+  --text-soft: #aab6ca;
+  --text-muted: #748199;
+
+  --border: rgba(79, 140, 255, 0.2);
+  --border-strong: rgba(79, 140, 255, 0.4);
+
+  --success: #42d6a0;
+  --warning: #ffc45b;
+  --danger: #ff697d;
+
+  --shadow: rgba(0, 0, 0, 0.42);
+}
+
+/* ============================================================
+   Reset
+   ============================================================ */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+
+  font-family: "Segoe UI", Arial, sans-serif;
+
+  color: var(--text-main);
+  background: var(--bg-main);
+}
+
+/* ============================================================
+   Background
+   ============================================================ */
+
+.cyber-background {
+  position: relative;
+
+  min-height: 100vh;
+
+  overflow-x: hidden;
+
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(79, 140, 255, 0.07),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 90% 90%,
+      rgba(95, 111, 255, 0.05),
+      transparent 25%
+    ),
+    linear-gradient(145deg, #050810, #09101c 50%, #060a12);
+}
+
+/* ============================================================
+   Grid
+   ============================================================ */
+
+.grid-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: 0.55;
+
+  background-image:
+    linear-gradient(rgba(79, 140, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79, 140, 255, 0.018) 1px, transparent 1px);
+
+  background-size: 42px 42px;
+}
+
+/* ============================================================
+   Glow
+   ============================================================ */
+
+.glow {
+  position: fixed;
+
+  width: 280px;
+  height: 280px;
+
+  border-radius: 50%;
+
+  filter: blur(100px);
+
+  pointer-events: none;
+}
+
+.glow-one {
+  top: -140px;
+  left: -110px;
+
+  background: rgba(79, 140, 255, 0.08);
+}
+
+.glow-two {
+  right: -120px;
+  bottom: -140px;
+
+  background: rgba(108, 96, 255, 0.06);
+}
+
+/* ============================================================
+   Top Bar
+   ============================================================ */
+
+.topbar {
+  position: relative;
+
+  z-index: 5;
+
+  width: min(1380px, calc(100% - 40px));
+
+  margin: 0 auto;
+
+  padding: 20px 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 24px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+/* ============================================================
+   Brand
+   ============================================================ */
+
+.brand {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  min-width: 0;
+}
+
+.brand-icon {
+  width: 48px;
+  height: 48px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: rgba(79, 140, 255, 0.1);
+
+  border: 1px solid var(--border-strong);
+
+  border-radius: 12px;
+
+  font-size: 21px;
+}
+
+.brand-text {
+  min-width: 0;
+}
+
+.brand-text h1 {
+  color: var(--text-main);
+
+  font-size: 22px;
+
+  font-weight: 800;
+
+  line-height: 1.15;
+}
+
+.brand-text > span {
+  display: block;
+
+  margin-top: 4px;
+
+  color: var(--text-muted);
+
+  font-size: 12px;
+}
+
+/* ============================================================
+   User Area
+   ============================================================ */
+
+.user-area {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+}
+
+.user-info {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+}
+
+.user-info strong {
+  color: var(--text-main);
+
+  font-size: 14px;
+
+  font-weight: 700;
+}
+
+.role-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 5px 9px;
+
+  color: var(--primary-light);
+
+  background: rgba(79, 140, 255, 0.08);
+
+  border: 1px solid var(--border);
+
+  border-radius: 7px;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   Back Button
+   ============================================================ */
+
+.back-btn {
+  min-height: 40px;
+
+  padding: 0 14px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: var(--text-soft);
+
+  background: rgba(255, 255, 255, 0.025);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 9px;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+  transition:
+    color 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.back-btn:hover {
+  color: var(--text-main);
+
+  background: rgba(79, 140, 255, 0.07);
+
+  border-color: var(--border-strong);
+}
+
+.back-btn:focus-visible {
+  outline: 2px solid var(--primary-light);
+
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   Main Container
+   ============================================================ */
+
+.evidence-container {
+  position: relative;
+
+  z-index: 2;
+
+  width: min(1380px, calc(100% - 40px));
+
+  margin: 0 auto;
+
+  padding: 42px 0 50px;
+}
+
+/* ============================================================
+   Page Header
+   ============================================================ */
+
+.page-header {
+  margin-bottom: 28px;
+
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.page-header h2 {
+  color: var(--text-main);
+
+  font-size: clamp(30px, 4vw, 40px);
+
+  font-weight: 800;
+
+  line-height: 1.15;
+
+  letter-spacing: -0.8px;
+}
+
+.page-header p {
+  margin-top: 9px;
+
+  color: var(--text-soft);
+
+  font-size: 15px;
+
+  line-height: 1.6;
+}
+
+/* ============================================================
+   Upload Button
+   ============================================================ */
+
+.upload-btn {
+  min-height: 44px;
+
+  padding: 0 15px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 7px;
+
+  flex-shrink: 0;
+
+  color: #ffffff;
+
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+
+  border: 1px solid rgba(124, 168, 255, 0.38);
+
+  border-radius: 9px;
+
+  box-shadow: 0 10px 26px rgba(49, 95, 199, 0.18);
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  text-decoration: none;
+
+  transition:
+    transform 0.18s ease,
+    filter 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.upload-btn:hover {
+  filter: brightness(1.07);
+
+  transform: translateY(-1px);
+
+  box-shadow: 0 14px 30px rgba(49, 95, 199, 0.25);
+}
+
+.upload-btn:active {
+  transform: translateY(0);
+}
+
+.upload-btn:focus-visible {
+  outline: 2px solid var(--primary-light);
+
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   Flash Messages
+   ============================================================ */
+
+.messages {
+  margin-bottom: 22px;
+}
+
+.message {
+  padding: 13px 15px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  border: 1px solid transparent;
+
+  border-radius: 10px;
+
+  font-size: 14px;
+
+  line-height: 1.5;
+}
+
+.message.success {
+  color: #b9f5df;
+
+  background: rgba(66, 214, 160, 0.08);
+
+  border-color: rgba(66, 214, 160, 0.2);
+}
+
+.message.danger,
+.message.error {
+  color: #ffc2cb;
+
+  background: rgba(255, 105, 125, 0.08);
+
+  border-color: rgba(255, 105, 125, 0.2);
+}
+
+.message.warning {
+  color: #ffe2a6;
+
+  background: rgba(255, 197, 94, 0.08);
+
+  border-color: rgba(255, 197, 94, 0.18);
+}
+
+.message-icon {
+  font-weight: 800;
+}
+
+/* ============================================================
+   Table Box
+   ============================================================ */
+
+.table-box {
+  background: linear-gradient(
+    160deg,
+    rgba(14, 21, 36, 0.98),
+    rgba(8, 13, 23, 0.99)
+  );
+
+  border: 1px solid var(--border);
+
+  border-radius: 16px;
+
+  box-shadow: 0 18px 55px var(--shadow);
+
+  overflow: hidden;
+}
+
+.box-header {
+  padding: 23px 24px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+.box-header h3 {
+  color: var(--text-main);
+
+  font-size: 20px;
+
+  font-weight: 800;
+}
+
+.record-count {
+  padding: 7px 11px;
+
+  color: var(--primary-light);
+
+  background: rgba(79, 140, 255, 0.07);
+
+  border: 1px solid var(--border);
+
+  border-radius: 8px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+/* ============================================================
+   Table
+   ============================================================ */
+
+.table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+
+  min-width: 980px;
+
+  border-collapse: collapse;
+}
+
+thead {
+  background: rgba(255, 255, 255, 0.018);
+}
+
+th {
+  padding: 15px 16px;
+
+  color: var(--text-muted);
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  text-align: left;
+
+  white-space: nowrap;
+
+  text-transform: uppercase;
+}
+
+td {
+  padding: 17px 16px;
+
+  color: var(--text-soft);
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.045);
+
+  font-size: 14px;
+
+  vertical-align: middle;
+}
+
+tbody tr {
+  transition: background 0.18s ease;
+}
+
+tbody tr:hover {
+  background: rgba(79, 140, 255, 0.035);
+}
+
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* ============================================================
+   Evidence ID
+   ============================================================ */
+
+.evidence-id {
+  color: var(--primary-light);
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  white-space: nowrap;
+}
+
+/* ============================================================
+   File Name
+   ============================================================ */
+
+.file-name {
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  min-width: 220px;
+}
+
+.file-icon {
+  width: 36px;
+  height: 36px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: rgba(79, 140, 255, 0.07);
+
+  border: 1px solid var(--border);
+
+  border-radius: 8px;
+
+  font-size: 16px;
+}
+
+.file-name strong {
+  display: block;
+
+  max-width: 230px;
+
+  overflow: hidden;
+
+  color: var(--text-main);
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.file-status {
+  display: block;
+
+  margin-top: 4px;
+
+  color: var(--text-muted);
+
+  font-size: 11px;
+}
+
+/* ============================================================
+   Note
+   ============================================================ */
+
+.note-text {
+  display: block;
+
+  max-width: 240px;
+
+  overflow: hidden;
+
+  color: var(--text-soft);
+
+  font-size: 13px;
+
+  line-height: 1.5;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.no-note {
+  color: var(--text-muted);
+
+  font-size: 13px;
+}
+
+/* ============================================================
+   Date
+   ============================================================ */
+
+.date-value {
+  color: var(--text-soft);
+
+  font-size: 13px;
+
+  white-space: nowrap;
+}
+
+/* ============================================================
+   Integrity
+   ============================================================ */
+
+.integrity-status {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  color: var(--success);
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.integrity-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: var(--success);
+
+  box-shadow: 0 0 8px rgba(66, 214, 160, 0.6);
+}
+
+/* ============================================================
+   Actions
+   ============================================================ */
+
+.actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  min-height: 36px;
+
+  padding: 0 10px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 6px;
+
+  border: 1px solid transparent;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.action-btn:hover {
+  transform: translateY(-1px);
+}
+
+/* View */
+
+.view-btn {
+  color: #c4d7ff;
+
+  background: rgba(79, 140, 255, 0.07);
+
+  border-color: rgba(79, 140, 255, 0.2);
+}
+
+.view-btn:hover {
+  background: rgba(79, 140, 255, 0.13);
+
+  border-color: rgba(79, 140, 255, 0.34);
+}
+
+/* Verify */
+
+.verify-btn {
+  color: #b9f5df;
+
+  background: rgba(66, 214, 160, 0.06);
+
+  border-color: rgba(66, 214, 160, 0.18);
+}
+
+.verify-btn:hover {
+  background: rgba(66, 214, 160, 0.11);
+
+  border-color: rgba(66, 214, 160, 0.3);
+}
+
+/* Edit */
+
+.edit-btn {
+  color: #d1c5ff;
+
+  background: rgba(145, 119, 255, 0.07);
+
+  border-color: rgba(145, 119, 255, 0.18);
+}
+
+.edit-btn:hover {
+  background: rgba(145, 119, 255, 0.12);
+
+  border-color: rgba(145, 119, 255, 0.32);
+}
+
+/* Delete */
+
+.delete-btn {
+  color: #ffc3cb;
+
+  background: rgba(255, 105, 125, 0.07);
+
+  border-color: rgba(255, 105, 125, 0.18);
+}
+
+.delete-btn:hover {
+  background: rgba(255, 105, 125, 0.12);
+
+  border-color: rgba(255, 105, 125, 0.32);
+}
+
+.delete-form {
+  margin: 0;
+}
+
+/* ============================================================
+   Empty State
+   ============================================================ */
+
+.empty-state {
+  padding: 72px 25px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  text-align: center;
+}
+
+.empty-icon {
+  width: 68px;
+  height: 68px;
+
+  margin-bottom: 16px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: rgba(79, 140, 255, 0.07);
+
+  border: 1px solid var(--border);
+
+  border-radius: 15px;
+
+  font-size: 27px;
+}
+
+.empty-state h3 {
+  color: var(--text-main);
+
+  font-size: 21px;
+
+  font-weight: 800;
+}
+
+.empty-state p {
+  max-width: 500px;
+
+  margin: 9px 0 18px;
+
+  color: var(--text-soft);
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+
+.footer {
+  position: relative;
+
+  z-index: 2;
+
+  width: min(1380px, calc(100% - 40px));
+
+  margin: 0 auto;
+
+  padding: 20px 0 25px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: var(--text-muted);
+
+  border-top: 1px solid rgba(255, 255, 255, 0.055);
+
+  font-size: 11px;
+
+  text-align: center;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+@media (max-width: 950px) {
+  .topbar {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .user-area {
+    width: 100%;
+
+    justify-content: space-between;
+  }
+
+  .page-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .upload-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .topbar,
+  .evidence-container,
+  .footer {
+    width: min(100% - 22px, 1380px);
+  }
+
+  .topbar {
+    padding: 17px 0;
+  }
+
+  .evidence-container {
+    padding: 28px 0 38px;
+  }
+
+  .brand-icon {
+    width: 42px;
+    height: 42px;
+
+    font-size: 19px;
+  }
+
+  .brand-text h1 {
+    font-size: 19px;
+  }
+
+  .user-area {
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+  .user-info {
+    justify-content: space-between;
+  }
+
+  .back-btn {
+    width: 100%;
+  }
+
+  .page-header h2 {
+    font-size: 30px;
+  }
+
+  .page-header p {
+    font-size: 13px;
+  }
+
+  .box-header {
+    padding: 18px;
+  }
+
+  .box-header h3 {
+    font-size: 18px;
+  }
+
+  .table-box {
+    border-radius: 13px;
+  }
+
+  .actions {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .action-btn {
+    width: 100%;
+  }
+
+  .delete-form {
+    width: 100%;
+  }
+
+  .delete-form .action-btn {
+    width: 100%;
+  }
+}
+
+/* ============================================================
+   Accessibility
+   ============================================================ */
+
+.action-btn:focus-visible,
+.upload-btn:focus-visible {
+  outline: 2px solid var(--primary-light);
+
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}

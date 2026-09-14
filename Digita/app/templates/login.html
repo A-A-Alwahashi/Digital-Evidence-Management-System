@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="description" content="Secure Evidence Management System" />
+
+    <title>Secure Evidence | Login</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/login.css') }}"
+    />
+  </head>
+
+  <body>
+    <!-- ============================================================
+       Cybersecurity Login Interface
+       Authentication is processed by the Flask backend.
+       No client-side authentication logic is used.
+       ============================================================ -->
+
+    <div class="cyber-background">
+      <!-- Decorative security grid -->
+      <div class="grid-overlay"></div>
+
+      <!-- Decorative glow effects -->
+      <div class="glow glow-one"></div>
+      <div class="glow glow-two"></div>
+
+      <main class="login-container">
+        <section class="login-box" aria-labelledby="login-title">
+          <!-- ======================================================
+             Security Header
+             ====================================================== -->
+
+          <header class="login-header">
+            <div class="security-icon" aria-hidden="true">🔐</div>
+
+            <h1 id="login-title">Secure Evidence</h1>
+
+            <p class="subtitle">Digital Evidence Management System</p>
+          </header>
+
+          <!-- ======================================================
+             Login Form
+             ====================================================== -->
+
+          <form
+            method="POST"
+            action="{{ url_for('auth.login') }}"
+            class="login-form"
+            novalidate
+          >
+            <!--
+              CSRF token protects this authentication form
+              against Cross-Site Request Forgery attacks.
+            -->
+
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+            <!-- ====================================================
+               Username
+               ==================================================== -->
+
+            <div class="form-group">
+              <label for="username">
+                <span class="label-icon" aria-hidden="true"> 👤 </span>
+
+                Username
+              </label>
+
+              <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Enter your username"
+                autocomplete="username"
+                maxlength="30"
+                required
+                autofocus
+              />
+            </div>
+
+            <!-- ====================================================
+               Password
+               ==================================================== -->
+
+            <div class="form-group">
+              <label for="password">
+                <span class="label-icon" aria-hidden="true"> 🔑 </span>
+
+                Password
+              </label>
+
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+                required
+              />
+            </div>
+
+            <!-- ====================================================
+               Authentication Button
+               ==================================================== -->
+
+            <button type="submit" class="login-btn">
+              <span class="button-icon" aria-hidden="true"> 🔐 </span>
+
+              <span> Authenticate </span>
+            </button>
+          </form>
+
+          <!-- ======================================================
+             Flash Messages
+             ====================================================== -->
+
+          {% with messages = get_flashed_messages(with_categories=true) %} {% if
+          messages %}
+
+          <section class="messages" aria-live="polite" aria-atomic="true">
+            {% for category, message in messages %}
+
+            <div class="message {{ category }}">
+              <span class="message-icon" aria-hidden="true">
+                {% if category == "success" %} ✓ {% elif category == "danger" or
+                category == "error" %} ! {% else %} ⚠ {% endif %}
+              </span>
+
+              <span> {{ message }} </span>
+            </div>
+
+            {% endfor %}
+          </section>
+
+          {% endif %} {% endwith %}
+
+          <!-- ======================================================
+             Registration
+             ====================================================== -->
+
+          <div class="signup-link">
+            <span> Don't have an account? </span>
+
+            <a href="{{ url_for('auth.signup') }}"> Create Account </a>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

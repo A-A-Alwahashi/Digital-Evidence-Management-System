@@ -1,0 +1,35 @@
+Metadata-Version: 2.1
+Name: Flask-Argon2
+Version: 0.3.0.0
+Summary: Flask-Argon2 provides convenient wrappers for Argon2 password hashing
+Home-page: https://github.com/red-coracle/flask-argon2
+Author: DominusTemporis
+Author-email: python@dominustemporis.com
+License: MIT
+Platform: any
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+License-File: LICENSE
+Requires-Dist: Flask
+Requires-Dist: argon2-cffi
+
+
+Flask-Argon2
+------------
+
+The Flask-Argon2 extension provides Argon2i password hashing with
+sensible defaults and a random salt for Flask.
+
+Links
+`````
+* `Documentation <http://flask-argon2.readthedocs.org/en/latest/>`_
+* `Development version <https://github.com/red-coracle/flask-argon2>`_
+* `argon2_cffi <https://github.com/hynek/argon2_cffi>`_
+
+

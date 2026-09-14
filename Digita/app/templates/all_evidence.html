@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="description" content="Secure Evidence Management System" />
+
+    <title>Secure Evidence | All Evidence</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/all_evidence.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="cyber-background">
+      <div class="grid-overlay"></div>
+
+      <div class="glow glow-one"></div>
+      <div class="glow glow-two"></div>
+
+      <!-- ==========================================================
+           Navigation
+           ========================================================== -->
+
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-icon" aria-hidden="true">🛡️</div>
+
+          <div class="brand-text">
+            <h1>Secure Evidence</h1>
+
+            <span> Evidence Review </span>
+          </div>
+        </div>
+
+        <div class="user-area">
+          <div class="user-info">
+            <strong> {{ current_user.username }} </strong>
+
+            <span class="role-badge"> {{ current_user.role }} </span>
+          </div>
+
+          <a href="{{ url_for('dashboard.dashboard') }}" class="back-btn">
+            Dashboard
+          </a>
+        </div>
+      </header>
+
+      <!-- ==========================================================
+           Main Content
+           ========================================================== -->
+
+      <main class="evidence-container">
+        <!-- ========================================================
+             Page Header
+             ======================================================== -->
+
+        <section class="page-header">
+          <div>
+            <h2>All Evidence</h2>
+
+            <p>Review evidence submitted by investigators.</p>
+          </div>
+        </section>
+
+        <!-- ========================================================
+             Flash Messages
+             ======================================================== -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %}
+
+        <section class="messages" aria-live="polite" aria-atomic="true">
+          {% for category, message in messages %}
+
+          <div class="message {{ category }}">
+            <span class="message-icon" aria-hidden="true">
+              {% if category == "success" %} ✓ {% elif category == "danger" or
+              category == "error" %} ! {% else %} ⚠ {% endif %}
+            </span>
+
+            <span> {{ message }} </span>
+          </div>
+
+          {% endfor %}
+        </section>
+
+        {% endif %} {% endwith %}
+
+        <!-- ========================================================
+             Evidence Records
+             ======================================================== -->
+
+        <section class="table-box">
+          <div class="box-header">
+            <div>
+              <h3>Available Evidence</h3>
+            </div>
+
+            {% if evidence_items %}
+
+            <span class="record-count">
+              {{ evidence_items|length }} Record{% if evidence_items|length != 1
+              %}s{% endif %}
+            </span>
+
+            {% endif %}
+          </div>
+
+          {% if evidence_items %}
+
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+
+                  <th>Filename</th>
+
+                  <th>Uploaded By</th>
+
+                  <th>Role</th>
+
+                  <th>Created</th>
+
+                  <th>Status</th>
+
+                  <th>Actions</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {% for evidence in evidence_items %}
+
+                <tr>
+                  <!-- ID -->
+
+                  <td>
+                    <span class="evidence-id"> #{{ evidence.id }} </span>
+                  </td>
+
+                  <!-- Filename -->
+
+                  <td>
+                    <div class="file-name">
+                      <span class="file-icon" aria-hidden="true"> 📄 </span>
+
+                      <div>
+                        <strong title="{{ evidence.original_filename }}">
+                          {{ evidence.original_filename }}
+                        </strong>
+
+                        <span class="file-status"> Stored </span>
+                      </div>
+                    </div>
+                  </td>
+
+                  <!-- Uploaded By -->
+
+                  <td>
+                    <span class="user-name">
+                      {% if evidence.uploaded_by %} {{
+                      evidence.uploaded_by.username }} {% else %} System {%
+                      endif %}
+                    </span>
+                  </td>
+
+                  <!-- Uploader Role -->
+
+                  <td>
+                    <span class="role-badge">
+                      {% if evidence.uploaded_by %} {{ evidence.uploaded_by.role
+                      }} {% else %} System {% endif %}
+                    </span>
+                  </td>
+
+                  <!-- Created -->
+
+                  <td>
+                    <span class="date-value">
+                      {{ evidence.created_at.strftime( "%Y-%m-%d %H:%M:%S" ) }}
+                    </span>
+                  </td>
+
+                  <!-- Status -->
+
+                  <td>
+                    <div class="security-state">
+                      <span
+                        class="security-state-dot"
+                        aria-hidden="true"
+                      ></span>
+
+                      <span>
+                        {{ evidence.verification_status|capitalize }}
+                      </span>
+                    </div>
+                  </td>
+
+                  <!-- Actions -->
+
+                  <td>
+                    <div class="actions">
+                      <!-- View -->
+
+                      <a
+                        href="{{ url_for(
+                              'evidence.view_evidence',
+                              evidence_id=evidence.id
+                            ) }}"
+                        class="action-btn view-btn"
+                      >
+                        <span aria-hidden="true"> 👁 </span>
+
+                        View
+                      </a>
+
+                      <!-- Verify -->
+
+                      <a
+                        href="{{ url_for(
+                              'evidence.verify_evidence',
+                              evidence_id=evidence.id
+                            ) }}"
+                        class="action-btn verify-btn"
+                      >
+                        <span aria-hidden="true"> 🔎 </span>
+
+                        Verify
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          {% else %}
+
+          <!-- ====================================================
+                 Empty State
+                 ==================================================== -->
+
+          <div class="empty-state">
+            <div class="empty-icon" aria-hidden="true">📂</div>
+
+            <h3>No Evidence Found</h3>
+
+            <p>There are currently no evidence records available.</p>
+          </div>
+
+          {% endif %}
+        </section>
+      </main>
+
+      <!-- ==========================================================
+           Footer
+           ========================================================== -->
+
+      <footer class="footer">
+        <span> Secure Evidence Management System </span>
+      </footer>
+    </div>
+  </body>
+</html>

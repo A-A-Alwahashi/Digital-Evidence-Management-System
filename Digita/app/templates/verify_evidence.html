@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="description"
+      content="Digital Evidence Management System - Verify Evidence"
+    />
+
+    <title>Secure Evidence | Verify Evidence</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/verify_evidence.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="cyber-background">
+      <div class="grid-overlay"></div>
+
+      <div class="glow glow-one"></div>
+      <div class="glow glow-two"></div>
+
+      <!-- Top Bar -->
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-icon" aria-hidden="true">🔎</div>
+
+          <div class="brand-text">
+            <h1>Secure Evidence</h1>
+
+            <span>Evidence Verification</span>
+          </div>
+        </div>
+
+        <div class="user-area">
+          <div class="user-info">
+            <strong>{{ current_user.username }}</strong>
+
+            <span class="role-badge"> {{ current_user.role }} </span>
+          </div>
+
+          <a href="{{ url_for('dashboard.dashboard') }}" class="back-btn">
+            Dashboard
+          </a>
+        </div>
+      </header>
+
+      <!-- Main -->
+      <main class="verify-container">
+        <!-- Page Header -->
+        <section class="page-header">
+          <div>
+            <h2>Verify Evidence</h2>
+
+            <p>Check the integrity of the selected evidence.</p>
+          </div>
+        </section>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %}
+
+        <section class="messages" aria-live="polite" aria-atomic="true">
+          {% for category, message in messages %}
+
+          <div class="message {{ category }}">
+            <span class="message-icon" aria-hidden="true">
+              {% if category == "success" %} ✓ {% elif category == "danger" or
+              category == "error" %} ! {% else %} ⚠ {% endif %}
+            </span>
+
+            <span>{{ message }}</span>
+          </div>
+
+          {% endfor %}
+        </section>
+
+        {% endif %} {% endwith %}
+
+        <!-- Evidence Card -->
+        <section class="evidence-card">
+          <!-- Evidence Header -->
+          <div class="evidence-header">
+            <div class="file-icon" aria-hidden="true">📄</div>
+
+            <div class="file-heading">
+              <h3>{{ evidence.original_filename }}</h3>
+
+              <span class="evidence-id"> Evidence ID: #{{ evidence.id }} </span>
+            </div>
+          </div>
+
+          <!-- Verification Result -->
+          <section class="result-section" aria-live="polite" aria-atomic="true">
+            {% if verification_result is defined %} {% if
+            verification_result.valid %}
+
+            <div class="result-box success">
+              <div class="result-icon" aria-hidden="true">✓</div>
+
+              <div class="result-content">
+                <span class="result-label"> VERIFICATION PASSED </span>
+
+                <h3>Evidence Integrity Verified</h3>
+
+                <p>
+                  The evidence passed the integrity verification check. No
+                  modification was detected.
+                </p>
+              </div>
+            </div>
+
+            {% else %}
+
+            <div class="result-box danger">
+              <div class="result-icon" aria-hidden="true">!</div>
+
+              <div class="result-content">
+                <span class="result-label"> VERIFICATION FAILED </span>
+
+                <h3>Integrity Verification Failed</h3>
+
+                <p>
+                  The evidence did not pass the integrity verification check.
+                </p>
+              </div>
+            </div>
+
+            {% endif %} {% else %}
+
+            <div class="result-box pending">
+              <div class="result-icon" aria-hidden="true">?</div>
+
+              <div class="result-content">
+                <span class="result-label"> NOT VERIFIED </span>
+
+                <h3>Verification Required</h3>
+
+                <p>Run the verification process to check this evidence.</p>
+              </div>
+            </div>
+
+            {% endif %}
+          </section>
+
+          <!-- Evidence Details -->
+          <section class="details-section">
+            <div class="section-title">
+              <span class="title-icon" aria-hidden="true">📋</span>
+
+              <div>
+                <h3>Evidence Details</h3>
+              </div>
+            </div>
+
+            <div class="details-grid">
+              <div class="detail-item">
+                <span>File Name</span>
+
+                <strong> {{ evidence.original_filename }} </strong>
+              </div>
+
+              <div class="detail-item">
+                <span>Evidence ID</span>
+
+                <strong> #{{ evidence.id }} </strong>
+              </div>
+
+              <div class="detail-item">
+                <span>File Size</span>
+
+                <strong> {{ evidence.file_size }} bytes </strong>
+              </div>
+
+              <div class="detail-item">
+                <span>Verification Status</span>
+
+                <strong> {{ evidence.verification_status }} </strong>
+              </div>
+            </div>
+          </section>
+
+          <!-- Verification Information -->
+          <section class="verification-info">
+            <div class="info-item">
+              <span class="info-icon" aria-hidden="true">#️⃣</span>
+
+              <div>
+                <strong>SHA-256</strong>
+
+                <span> Evidence integrity hash </span>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <span class="info-icon" aria-hidden="true">✍️</span>
+
+              <div>
+                <strong>Digital Signature</strong>
+
+                <span> Stored signature verification </span>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <span class="info-icon" aria-hidden="true">🔒</span>
+
+              <div>
+                <strong>Protected Storage</strong>
+
+                <span> Evidence is stored in protected form </span>
+              </div>
+            </div>
+          </section>
+
+          <!-- Verification Action -->
+          <section class="actions-section">
+            <form
+              method="POST"
+              action="{{ url_for('evidence.verify_evidence', evidence_id=evidence.id) }}"
+              class="verify-form"
+            >
+              <input
+                type="hidden"
+                name="csrf_token"
+                value="{{ csrf_token() }}"
+              />
+
+              <button type="submit" class="verify-btn">
+                <span class="button-icon" aria-hidden="true"> 🔎 </span>
+
+                <span>Verify Evidence</span>
+              </button>
+            </form>
+
+            <div class="secondary-actions">
+              <a
+                href="{{ url_for('evidence.view_evidence', evidence_id=evidence.id) }}"
+                class="back-action"
+              >
+                <span aria-hidden="true">👁</span>
+                View Evidence
+              </a>
+
+              <a
+                href="{{ url_for('evidence.my_evidence') }}"
+                class="back-action"
+              >
+                <span aria-hidden="true">←</span>
+                My Evidence
+              </a>
+            </div>
+          </section>
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer">Digital Evidence Management System</footer>
+    </div>
+  </body>
+</html>

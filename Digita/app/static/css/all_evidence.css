@@ -1,0 +1,863 @@
+/* ============================================================
+   Secure Evidence
+   All Evidence Page
+   ============================================================ */
+
+:root {
+  --bg-main: #070b14;
+  --bg-panel: #0e1524;
+  --bg-soft: #111b2d;
+
+  --primary: #4f8cff;
+  --primary-light: #7ca8ff;
+
+  --text-main: #f4f7ff;
+  --text-soft: #aab6ca;
+  --text-muted: #748199;
+
+  --border: rgba(79, 140, 255, 0.2);
+  --border-strong: rgba(79, 140, 255, 0.4);
+
+  --success: #42d6a0;
+  --danger: #ff697d;
+
+  --shadow: rgba(0, 0, 0, 0.42);
+}
+
+/* ============================================================
+   Reset
+   ============================================================ */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+
+  font-family: "Segoe UI", Arial, sans-serif;
+
+  color: var(--text-main);
+  background: var(--bg-main);
+}
+
+/* ============================================================
+   Background
+   ============================================================ */
+
+.cyber-background {
+  position: relative;
+
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(79, 140, 255, 0.07),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 90% 90%,
+      rgba(79, 140, 255, 0.05),
+      transparent 25%
+    ),
+    linear-gradient(145deg, #050810, #09101c 50%, #060a12);
+
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   Grid
+   ============================================================ */
+
+.grid-overlay {
+  position: fixed;
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: 0.55;
+
+  background-image:
+    linear-gradient(rgba(79, 140, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79, 140, 255, 0.018) 1px, transparent 1px);
+
+  background-size: 42px 42px;
+}
+
+/* ============================================================
+   Glow
+   ============================================================ */
+
+.glow {
+  position: fixed;
+
+  width: 280px;
+  height: 280px;
+
+  border-radius: 50%;
+
+  filter: blur(100px);
+
+  pointer-events: none;
+}
+
+.glow-one {
+  top: -140px;
+  left: -100px;
+
+  background: rgba(79, 140, 255, 0.08);
+}
+
+.glow-two {
+  right: -120px;
+  bottom: -140px;
+
+  background: rgba(111, 98, 255, 0.06);
+}
+
+/* ============================================================
+   Top Bar
+   ============================================================ */
+
+.topbar {
+  position: relative;
+  z-index: 5;
+
+  width: min(1400px, calc(100% - 40px));
+
+  margin: 0 auto;
+  padding: 22px 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 25px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+/* ============================================================
+   Brand
+   ============================================================ */
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  min-width: 0;
+}
+
+.brand-icon {
+  width: 47px;
+  height: 47px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(79, 140, 255, 0.1);
+
+  border: 1px solid var(--border-strong);
+
+  border-radius: 12px;
+
+  font-size: 21px;
+}
+
+.brand-text {
+  min-width: 0;
+}
+
+.brand-text h1 {
+  color: var(--text-main);
+
+  font-size: 21px;
+  font-weight: 800;
+
+  line-height: 1.15;
+}
+
+.brand-text > span {
+  display: block;
+
+  margin-top: 4px;
+
+  color: var(--text-muted);
+
+  font-size: 12px;
+}
+
+/* ============================================================
+   User Area
+   ============================================================ */
+
+.user-area {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.user-info strong {
+  color: var(--text-main);
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 5px 9px;
+
+  color: var(--primary-light);
+
+  background: rgba(79, 140, 255, 0.08);
+
+  border: 1px solid var(--border);
+
+  border-radius: 7px;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+}
+
+.back-btn {
+  min-height: 40px;
+
+  padding: 0 14px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--text-soft);
+
+  background: rgba(255, 255, 255, 0.025);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 9px;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  text-decoration: none;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.back-btn:hover {
+  color: var(--text-main);
+
+  background: rgba(79, 140, 255, 0.07);
+
+  border-color: var(--border-strong);
+}
+
+/* ============================================================
+   Main Container
+   ============================================================ */
+
+.evidence-container {
+  position: relative;
+  z-index: 2;
+
+  width: min(1400px, calc(100% - 40px));
+
+  margin: 0 auto;
+
+  padding: 42px 0 50px;
+}
+
+/* ============================================================
+   Page Header
+   ============================================================ */
+
+.page-header {
+  margin-bottom: 27px;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.page-header h2 {
+  color: var(--text-main);
+
+  font-size: clamp(29px, 4vw, 40px);
+
+  font-weight: 800;
+
+  line-height: 1.15;
+
+  letter-spacing: -0.8px;
+}
+
+.page-header p {
+  margin-top: 9px;
+
+  color: var(--text-soft);
+
+  font-size: 15px;
+
+  line-height: 1.6;
+}
+
+/* ============================================================
+   Messages
+   ============================================================ */
+
+.messages {
+  margin-bottom: 22px;
+}
+
+.message {
+  padding: 13px 15px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  border: 1px solid transparent;
+
+  border-radius: 10px;
+
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.message.success {
+  color: #b9f5df;
+
+  background: rgba(66, 214, 160, 0.08);
+
+  border-color: rgba(66, 214, 160, 0.2);
+}
+
+.message.danger,
+.message.error {
+  color: #ffc2cb;
+
+  background: rgba(255, 105, 125, 0.08);
+
+  border-color: rgba(255, 105, 125, 0.2);
+}
+
+.message.warning {
+  color: #ffe2a6;
+
+  background: rgba(255, 197, 94, 0.08);
+
+  border-color: rgba(255, 197, 94, 0.18);
+}
+
+.message-icon {
+  font-weight: 800;
+}
+
+/* ============================================================
+   Table Box
+   ============================================================ */
+
+.table-box {
+  background: linear-gradient(
+    160deg,
+    rgba(14, 21, 36, 0.98),
+    rgba(8, 13, 23, 0.99)
+  );
+
+  border: 1px solid var(--border);
+
+  border-radius: 16px;
+
+  box-shadow: 0 18px 55px var(--shadow);
+}
+
+.box-header {
+  padding: 23px 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+.box-header h3 {
+  color: var(--text-main);
+
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.record-count {
+  padding: 7px 11px;
+
+  color: var(--primary-light);
+
+  background: rgba(79, 140, 255, 0.07);
+
+  border: 1px solid var(--border);
+
+  border-radius: 8px;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ============================================================
+   Table
+   ============================================================ */
+
+.table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  min-width: 950px;
+}
+
+thead {
+  background: rgba(255, 255, 255, 0.018);
+}
+
+th {
+  padding: 15px 16px;
+
+  color: var(--text-muted);
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+
+  font-size: 12px;
+  font-weight: 700;
+
+  text-align: left;
+
+  white-space: nowrap;
+
+  text-transform: uppercase;
+}
+
+td {
+  padding: 17px 16px;
+
+  color: var(--text-soft);
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.045);
+
+  font-size: 14px;
+
+  vertical-align: middle;
+}
+
+tbody tr {
+  transition: background 0.18s ease;
+}
+
+tbody tr:hover {
+  background: rgba(79, 140, 255, 0.035);
+}
+
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* ============================================================
+   Evidence ID
+   ============================================================ */
+
+.evidence-id {
+  color: var(--primary-light);
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* ============================================================
+   File Name
+   ============================================================ */
+
+.file-name {
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  min-width: 210px;
+}
+
+.file-icon {
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(79, 140, 255, 0.07);
+
+  border: 1px solid var(--border);
+
+  border-radius: 8px;
+
+  font-size: 15px;
+}
+
+.file-name strong {
+  display: block;
+
+  max-width: 220px;
+
+  overflow: hidden;
+
+  color: var(--text-main);
+
+  font-size: 14px;
+  font-weight: 700;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.file-status {
+  display: block;
+
+  margin-top: 4px;
+
+  color: var(--text-muted);
+
+  font-size: 11px;
+}
+
+/* ============================================================
+   User Name
+   ============================================================ */
+
+.user-name {
+  color: var(--text-main);
+
+  font-weight: 600;
+}
+
+/* ============================================================
+   Date
+   ============================================================ */
+
+.date-value {
+  color: var(--text-soft);
+
+  font-size: 13px;
+
+  white-space: nowrap;
+}
+
+/* ============================================================
+   Status
+   ============================================================ */
+
+.security-state {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 7px;
+
+  color: var(--success);
+
+  font-size: 13px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.security-state-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: var(--success);
+
+  box-shadow: 0 0 8px rgba(66, 214, 160, 0.6);
+}
+
+/* ============================================================
+   Actions
+   ============================================================ */
+
+.actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+}
+
+.action-btn {
+  min-height: 36px;
+
+  padding: 0 10px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  border: 1px solid transparent;
+
+  border-radius: 8px;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  text-decoration: none;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.action-btn:hover {
+  transform: translateY(-1px);
+}
+
+.view-btn {
+  color: #b9d0ff;
+
+  background: rgba(79, 140, 255, 0.07);
+
+  border-color: rgba(79, 140, 255, 0.2);
+}
+
+.view-btn:hover {
+  background: rgba(79, 140, 255, 0.13);
+
+  border-color: rgba(79, 140, 255, 0.34);
+}
+
+.verify-btn {
+  color: #b9f5df;
+
+  background: rgba(66, 214, 160, 0.06);
+
+  border-color: rgba(66, 214, 160, 0.17);
+}
+
+.verify-btn:hover {
+  background: rgba(66, 214, 160, 0.11);
+
+  border-color: rgba(66, 214, 160, 0.3);
+}
+
+/* ============================================================
+   Empty State
+   ============================================================ */
+
+.empty-state {
+  padding: 70px 25px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  text-align: center;
+}
+
+.empty-icon {
+  width: 68px;
+  height: 68px;
+
+  margin-bottom: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(79, 140, 255, 0.07);
+
+  border: 1px solid var(--border);
+
+  border-radius: 15px;
+
+  font-size: 27px;
+}
+
+.empty-state h3 {
+  color: var(--text-main);
+
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.empty-state p {
+  max-width: 500px;
+
+  margin-top: 8px;
+
+  color: var(--text-soft);
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+
+.footer {
+  position: relative;
+  z-index: 2;
+
+  width: min(1400px, calc(100% - 40px));
+
+  margin: 0 auto;
+
+  padding: 20px 0 25px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--text-muted);
+
+  border-top: 1px solid rgba(255, 255, 255, 0.055);
+
+  font-size: 11px;
+
+  text-align: center;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+@media (max-width: 900px) {
+  .topbar {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .user-area {
+    width: 100%;
+
+    justify-content: space-between;
+  }
+
+  .page-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 600px) {
+  .topbar,
+  .evidence-container,
+  .footer {
+    width: min(100% - 22px, 1400px);
+  }
+
+  .topbar {
+    padding: 17px 0;
+  }
+
+  .evidence-container {
+    padding: 28px 0 38px;
+  }
+
+  .brand-icon {
+    width: 42px;
+    height: 42px;
+
+    font-size: 19px;
+  }
+
+  .brand-text h1 {
+    font-size: 18px;
+  }
+
+  .user-area {
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+  .user-info {
+    justify-content: space-between;
+  }
+
+  .back-btn {
+    width: 100%;
+  }
+
+  .page-header h2 {
+    font-size: 30px;
+  }
+
+  .page-header p {
+    font-size: 13px;
+  }
+
+  .box-header {
+    padding: 18px;
+  }
+
+  .box-header h3 {
+    font-size: 17px;
+  }
+
+  .table-box {
+    border-radius: 13px;
+  }
+}
+
+/* ============================================================
+   Reduced Motion
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}

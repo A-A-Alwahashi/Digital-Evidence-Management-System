@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="description"
+      content="Digital Evidence Management System - Upload Evidence"
+    />
+
+    <title>Secure Evidence | Upload Evidence</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/upload.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="cyber-background">
+      <div class="grid-overlay"></div>
+
+      <div class="glow glow-one"></div>
+      <div class="glow glow-two"></div>
+
+      <main class="upload-container">
+        <!-- Header -->
+        <header class="upload-header">
+          <div class="security-icon" aria-hidden="true">📁</div>
+
+          <h1>Upload Evidence</h1>
+
+          <p>Add a new digital evidence record.</p>
+        </header>
+
+        <!-- Upload Box -->
+        <section class="upload-box">
+          <div class="box-header">
+            <div>
+              <h2>Evidence File</h2>
+
+              <p>Upload a file and add an optional note.</p>
+            </div>
+          </div>
+
+          <!-- Upload Form -->
+          <form
+            method="POST"
+            action="{{ url_for('evidence.upload') }}"
+            enctype="multipart/form-data"
+            class="upload-form"
+          >
+            <!-- CSRF Protection -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+            <!-- Evidence File -->
+            <div class="form-group">
+              <label for="file">
+                <span class="label-icon" aria-hidden="true">📁</span>
+                Evidence File
+              </label>
+
+              <div class="file-input-wrapper">
+                <input
+                  type="file"
+                  id="file"
+                  name="file"
+                  class="file-input"
+                  required
+                />
+
+                <div class="file-input-info">
+                  <span class="file-input-icon" aria-hidden="true"> 📂 </span>
+
+                  <strong>Select a file</strong>
+
+                  <span> Choose the evidence file to upload. </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Evidence Note -->
+            <div class="form-group">
+              <label for="note">
+                <span class="label-icon" aria-hidden="true">📝</span>
+                Evidence Note
+              </label>
+
+              <textarea
+                id="note"
+                name="note"
+                maxlength="1000"
+                placeholder="Enter a description or note about this evidence..."
+              ></textarea>
+
+              <div class="input-footer">
+                <small class="input-hint"> Maximum 1000 characters. </small>
+              </div>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="upload-btn">
+              <span class="button-icon" aria-hidden="true">↑</span>
+
+              <span>Upload Evidence</span>
+            </button>
+          </form>
+
+          <!-- Flash Messages -->
+          {% with messages = get_flashed_messages(with_categories=true) %} {% if
+          messages %}
+
+          <section class="messages" aria-live="polite" aria-atomic="true">
+            {% for category, message in messages %}
+
+            <div class="message {{ category }}">
+              <span class="message-icon" aria-hidden="true">
+                {% if category == "success" %} ✓ {% elif category == "danger" or
+                category == "error" %} ! {% else %} ⚠ {% endif %}
+              </span>
+
+              <span>{{ message }}</span>
+            </div>
+
+            {% endfor %}
+          </section>
+
+          {% endif %} {% endwith %}
+
+          <!-- Navigation -->
+          <div class="navigation-actions">
+            <a href="{{ url_for('dashboard.dashboard') }}" class="back-link">
+              <span aria-hidden="true">←</span>
+              Back to Dashboard
+            </a>
+
+            <a
+              href="{{ url_for('evidence.my_evidence') }}"
+              class="secondary-link"
+            >
+              View My Evidence
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">Digital Evidence Management System</footer>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="description"
+      content="Digital Evidence Management System - User Account"
+    />
+
+    <title>
+      Secure Evidence | {% if user %} Edit User {% else %} Create User {% endif
+      %}
+    </title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/admin_user_edit.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="cyber-background">
+      <div class="grid-overlay"></div>
+
+      <div class="glow glow-one"></div>
+      <div class="glow glow-two"></div>
+
+      <!-- ============================================================
+      Top Bar
+      ============================================================ -->
+
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-icon" aria-hidden="true">👤</div>
+
+          <div class="brand-text">
+            <h1>Secure Evidence</h1>
+
+            <span>
+              {% if user %} Edit User {% else %} Create User {% endif %}
+            </span>
+          </div>
+        </div>
+
+        <div class="user-area">
+          <div class="user-info">
+            <strong> {{ current_user.username }} </strong>
+
+            <span class="role-badge"> {{ current_user.role }} </span>
+          </div>
+
+          <a href="{{ url_for('admin.users') }}" class="back-btn"> Users </a>
+        </div>
+      </header>
+
+      <!-- ============================================================
+      Main
+      ============================================================ -->
+
+      <main class="edit-container">
+        <!-- Page Header -->
+        <section class="page-header">
+          <div>
+            {% if user %}
+
+            <h2>Edit User</h2>
+
+            <p>Update the account information and access role.</p>
+
+            {% else %}
+
+            <h2>Create User</h2>
+
+            <p>Create a new approved account.</p>
+
+            {% endif %}
+          </div>
+        </section>
+
+        <!-- ============================================================
+             Flash Messages
+             ============================================================ -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %}
+
+        <section class="messages" aria-live="polite" aria-atomic="true">
+          {% for category, message in messages %}
+
+          <div class="message {{ category }}">
+            <span class="message-icon" aria-hidden="true">
+              {% if category == "success" %} ✓ {% elif category == "danger" or
+              category == "error" %} ! {% else %} ⚠ {% endif %}
+            </span>
+
+            <span> {{ message }} </span>
+          </div>
+
+          {% endfor %}
+        </section>
+
+        {% endif %} {% endwith %}
+
+        <!-- ============================================================
+             Form Card
+             ============================================================ -->
+
+        <section class="form-card">
+          <div class="card-header">
+            <div>
+              <h3>
+                {% if user %} Account Information {% else %} New Account {%
+                endif %}
+              </h3>
+
+              <p>Enter the required account details.</p>
+            </div>
+
+            {% if user %}
+            <span class="user-id"> #{{ user.id }} </span>
+            {% endif %}
+          </div>
+
+          <!-- ==========================================================
+               User Form
+               ========================================================== -->
+
+          <form
+            method="POST"
+            class="user-form"
+            {%
+            if
+            user
+            %}
+            action="{{ url_for('admin.edit_user', user_id=user.id) }}"
+            {%
+            else
+            %}
+            action="{{ url_for('admin.create_user') }}"
+            {%
+            endif
+            %}
+          >
+            <!-- CSRF -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+            <!-- Username -->
+            <div class="form-group">
+              <label for="username">
+                <span class="label-icon" aria-hidden="true"> 👤 </span>
+
+                Username
+              </label>
+
+              <input
+                type="text"
+                id="username"
+                name="username"
+                value="{{ user.username if user else '' }}"
+                placeholder="Enter username"
+                minlength="3"
+                maxlength="30"
+                autocomplete="username"
+                required
+                autofocus
+              />
+
+              <small class="input-hint"> Use 3–30 characters. </small>
+            </div>
+
+            <!-- Role -->
+            <div class="form-group">
+              <label for="role">
+                <span class="label-icon" aria-hidden="true"> 🎭 </span>
+
+                Account Role
+              </label>
+
+              <select id="role" name="role" required>
+                <option
+                  value="investigator" {% if user and user.role == "investigator" %}
+                >
+                  Investigator
+                </option>
+
+                <option
+                  value="officer" {% if user and user.role == "officer" %}
+                >
+                  Officer
+                </option>
+
+                <option
+                  value="auditor" {% if user and user.role == "auditor" %}
+                >
+                  Auditor
+                </option>
+
+                <option
+                  value="admin" {% if user and user.role == "admin" %}
+                >
+                  Administrator
+                </option>
+              </select>
+
+              <small class="input-hint">
+                The role controls the user's application permissions.
+              </small>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+              <label for="password">
+                <span class="label-icon" aria-hidden="true"> 🔑 </span>
+
+                {% if user %} New Password {% else %} Password {% endif %}
+              </label>
+
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="{% if user %}Leave empty to keep current password{% else %}Enter password{% endif %}"
+                autocomplete="new-password"
+                minlength="8"
+                maxlength="128"
+                {%
+                if
+                not
+                user
+                %}
+                required
+                {%
+                endif
+                %}
+              />
+
+              <small class="input-hint">
+                {% if user %} Leave empty to keep the current password. {% else
+                %} Use 8–128 characters. {% endif %}
+              </small>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="form-group">
+              <label for="confirm_password">
+                <span class="label-icon" aria-hidden="true"> 🔐 </span>
+
+                Confirm Password
+              </label>
+
+              <input
+                type="password"
+                id="confirm_password"
+                name="confirm_password"
+                placeholder="Confirm password"
+                autocomplete="new-password"
+                minlength="8"
+                maxlength="128"
+                {%
+                if
+                not
+                user
+                %}
+                required
+                {%
+                endif
+                %}
+              />
+            </div>
+
+            {% if user %}
+
+            <!-- ======================================================
+                   Account Status
+                   ====================================================== -->
+
+            <section class="status-panel">
+              <div class="status-content">
+                <span class="status-label"> Account Status </span>
+
+                <strong>
+                  {% if user.account_status == "approved" and user.is_active %}
+                  Active {% elif user.account_status == "suspended" %} Suspended
+                  {% elif user.account_status == "rejected" %} Rejected {% elif
+                  user.account_status == "pending" %} Pending {% else %}
+                  Inactive {% endif %}
+                </strong>
+
+                <small> Control whether the user can access the system. </small>
+              </div>
+
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  name="is_active"
+                  value="1"
+                  {% if user.is_active %} checked {% endif %} {% if user.id == current_user.id %} disabled {% endif %}
+                />
+
+                <span class="slider"></span>
+              </label>
+            </section>
+
+            <!-- Self Account Notice -->
+            {% if user.id == current_user.id %}
+
+            <input type="hidden" name="is_active" value="1" />
+
+            <div class="account-note">
+              You cannot deactivate your own administrator account or remove
+              your own administrator role.
+            </div>
+
+            {% endif %}
+
+            <!-- Current Account Information -->
+            <section class="account-info">
+              <div class="info-item">
+                <span> Requested Role </span>
+
+                <strong> {{ user.requested_role }} </strong>
+              </div>
+
+              <div class="info-item">
+                <span> Failed Login Attempts </span>
+
+                <strong> {{ user.failed_login_attempts }} </strong>
+              </div>
+
+              <div class="info-item">
+                <span> Account Created </span>
+
+                <strong>
+                  {% if user.created_at %} {{
+                  user.created_at.strftime("%Y-%m-%d") }} {% else %} — {% endif
+                  %}
+                </strong>
+              </div>
+            </section>
+
+            {% endif %}
+
+            <!-- ======================================================
+                 Form Actions
+                 ====================================================== -->
+
+            <div class="form-actions">
+              <a href="{{ url_for('admin.users') }}" class="cancel-btn">
+                Cancel
+              </a>
+
+              <button type="submit" class="save-btn">
+                {% if user %}
+                <span aria-hidden="true">✓</span>
+                Save Changes {% else %}
+                <span aria-hidden="true">＋</span>
+                Create User {% endif %}
+              </button>
+            </div>
+          </form>
+        </section>
+      </main>
+
+      <!-- ============================================================
+      Footer
+      ============================================================ -->
+
+      <footer class="footer">Digital Evidence Management System</footer>
+    </div>
+  </body>
+</html>

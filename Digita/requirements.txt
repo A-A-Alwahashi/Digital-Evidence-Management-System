@@ -1,0 +1,57 @@
+# ============================================================
+# Secure Digital Evidence Management System
+# Python package dependencies
+#
+# Versions are pinned to make deployments reproducible.
+# A06: Vulnerable and Outdated Components
+# ============================================================
+
+# -------------------------
+# Web Framework
+# -------------------------
+Flask==3.1.3
+Werkzeug==3.1.8
+
+# -------------------------
+# Database / ORM
+# -------------------------
+Flask-SQLAlchemy==3.1.1
+SQLAlchemy==2.0.52
+
+# -------------------------
+# Authentication
+# -------------------------
+Flask-Login==0.6.3
+Flask-Argon2==0.1.0
+
+# -------------------------
+# CSRF / Forms / Validation
+# -------------------------
+Flask-WTF==1.3.0
+WTForms==3.2.2
+
+# -------------------------
+# Server-Side Session
+# -------------------------
+Flask-Session==0.8.0
+
+# -------------------------
+# Rate Limiting
+# -------------------------
+Flask-Limiter==4.1.1
+
+# -------------------------
+# HTML Sanitization
+# -------------------------
+bleach==6.4.0
+
+# -------------------------
+# Cryptography
+# -------------------------
+cryptography==50.0.1
+
+# -------------------------
+# Secure Signing / Serialization
+# -------------------------
+itsdangerous==2.2.0
+

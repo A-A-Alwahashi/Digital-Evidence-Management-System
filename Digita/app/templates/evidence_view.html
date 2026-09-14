@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="description" content="Secure Evidence Management System" />
+
+    <title>Secure Evidence | Evidence Details</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/evidence_view.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="cyber-background">
+      <div class="grid-overlay"></div>
+
+      <div class="glow glow-one"></div>
+      <div class="glow glow-two"></div>
+
+      <!-- ==========================================================
+           Navigation
+           ========================================================== -->
+
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-icon" aria-hidden="true">🔐</div>
+
+          <div class="brand-text">
+            <h1>Secure Evidence</h1>
+
+            <span> Evidence Details </span>
+          </div>
+        </div>
+
+        <div class="user-area">
+          <div class="user-info">
+            <strong> {{ current_user.username }} </strong>
+
+            <span class="role-badge"> {{ current_user.role }} </span>
+          </div>
+
+          <a href="{{ url_for('dashboard.dashboard') }}" class="back-btn">
+            Dashboard
+          </a>
+        </div>
+      </header>
+
+      <!-- ==========================================================
+           Main
+           ========================================================== -->
+
+      <main class="evidence-container">
+        <!-- ========================================================
+             Page Header
+             ======================================================== -->
+
+        <section class="page-header">
+          <div>
+            <h2>Evidence Details</h2>
+
+            <p>Review the selected evidence record.</p>
+          </div>
+        </section>
+
+        <!-- ========================================================
+             Flash Messages
+             ======================================================== -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %}
+
+        <section class="messages" aria-live="polite" aria-atomic="true">
+          {% for category, message in messages %}
+
+          <div class="message {{ category }}">
+            <span class="message-icon" aria-hidden="true">
+              {% if category == "success" %} ✓ {% elif category == "danger" or
+              category == "error" %} ! {% else %} ⚠ {% endif %}
+            </span>
+
+            <span> {{ message }} </span>
+          </div>
+
+          {% endfor %}
+        </section>
+
+        {% endif %} {% endwith %}
+
+        <!-- ========================================================
+             Evidence Card
+             ======================================================== -->
+
+        <section class="evidence-card">
+          <!-- ======================================================
+               Evidence Header
+               ====================================================== -->
+
+          <div class="card-header">
+            <div class="file-icon" aria-hidden="true">📄</div>
+
+            <div class="file-heading">
+              <h3>{{ evidence.original_filename }}</h3>
+
+              <span class="evidence-id"> #{{ evidence.id }} </span>
+            </div>
+
+            <div class="protected-badge">
+              <span class="badge-icon" aria-hidden="true"> 🔒 </span>
+
+              Protected
+            </div>
+          </div>
+
+          <!-- ======================================================
+               Evidence Metadata
+               ====================================================== -->
+
+          <section class="details-section">
+            <div class="section-title">
+              <span class="title-icon" aria-hidden="true"> 📋 </span>
+
+              <h3>Evidence Metadata</h3>
+            </div>
+
+            <div class="details-grid">
+              <div class="detail-item">
+                <span class="detail-label"> Evidence ID </span>
+
+                <strong> #{{ evidence.id }} </strong>
+              </div>
+
+              <div class="detail-item">
+                <span class="detail-label"> Filename </span>
+
+                <strong> {{ evidence.original_filename }} </strong>
+              </div>
+
+              <div class="detail-item">
+                <span class="detail-label"> Uploaded By </span>
+
+                <strong>
+                  {% if evidence.uploaded_by %} {{ evidence.uploaded_by.username
+                  }} {% else %} System {% endif %}
+                </strong>
+              </div>
+
+              <div class="detail-item">
+                <span class="detail-label"> Uploader Role </span>
+
+                <strong>
+                  {% if evidence.uploaded_by %} {{ evidence.uploaded_by.role }}
+                  {% else %} System {% endif %}
+                </strong>
+              </div>
+
+              <div class="detail-item">
+                <span class="detail-label"> Created At </span>
+
+                <strong>
+                  {{ evidence.created_at.strftime( "%Y-%m-%d %H:%M:%S" ) }}
+                </strong>
+              </div>
+
+              <div class="detail-item">
+                <span class="detail-label"> Updated At </span>
+
+                <strong>
+                  {{ evidence.updated_at.strftime( "%Y-%m-%d %H:%M:%S" ) }}
+                </strong>
+              </div>
+
+              <div class="detail-item">
+                <span class="detail-label"> Verification Status </span>
+
+                <strong> {{ evidence.verification_status|capitalize }} </strong>
+              </div>
+
+              <div class="detail-item">
+                <span class="detail-label"> File Size </span>
+
+                <strong> {{ evidence.file_size }} bytes </strong>
+              </div>
+            </div>
+          </section>
+
+          <!-- ======================================================
+               Evidence Note
+               ====================================================== -->
+
+          <section class="note-section">
+            <div class="section-title">
+              <span class="title-icon" aria-hidden="true"> 📝 </span>
+
+              <h3>Evidence Note</h3>
+            </div>
+
+            {% if evidence.note %}
+
+            <div class="note-box">{{ evidence.note }}</div>
+
+            {% else %}
+
+            <div class="note-box empty-note">
+              <span class="empty-note-icon" aria-hidden="true"> 📝 </span>
+
+              <span> No note was added. </span>
+            </div>
+
+            {% endif %}
+          </section>
+
+          <!-- ======================================================
+               Evidence Protection Information
+               ====================================================== -->
+
+          <section class="security-panel">
+            <div class="panel-title">
+              <div class="panel-icon" aria-hidden="true">🔐</div>
+
+              <h3>Evidence Protection</h3>
+            </div>
+
+            <div class="security-grid">
+              <div class="security-item">
+                <div class="security-item-icon" aria-hidden="true">🔒</div>
+
+                <div>
+                  <span> Storage </span>
+
+                  <strong> Encrypted </strong>
+                </div>
+              </div>
+
+              <div class="security-item">
+                <div class="security-item-icon" aria-hidden="true">#️⃣</div>
+
+                <div>
+                  <span> Integrity Hash </span>
+
+                  <strong> SHA-256 </strong>
+                </div>
+              </div>
+
+              <div class="security-item">
+                <div class="security-item-icon" aria-hidden="true">✍️</div>
+
+                <div>
+                  <span> Digital Signature </span>
+
+                  <strong> RSA </strong>
+                </div>
+              </div>
+
+              <div class="security-item">
+                <div class="security-item-icon" aria-hidden="true">🛡️</div>
+
+                <div>
+                  <span> Access Control </span>
+
+                  <strong> Role Based </strong>
+                </div>
+              </div>
+
+              <div class="security-item">
+                <div class="security-item-icon" aria-hidden="true">📋</div>
+
+                <div>
+                  <span> Audit Logging </span>
+
+                  <strong> Enabled </strong>
+                </div>
+              </div>
+
+              <div class="security-item">
+                <div class="security-item-icon" aria-hidden="true">🖥️</div>
+
+                <div>
+                  <span> Processing </span>
+
+                  <strong> Server Side </strong>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ======================================================
+               Evidence Actions
+               ====================================================== -->
+
+          <section class="actions-section">
+            <div class="section-title">
+              <span class="title-icon" aria-hidden="true"> ⚙️ </span>
+
+              <h3>Evidence Operations</h3>
+            </div>
+
+            <div class="actions">
+              <!-- Download -->
+
+              <a
+                href="{{ url_for(
+                  'evidence.download_evidence',
+                  evidence_id=evidence.id
+                ) }}"
+                class="action-btn view-btn"
+              >
+                <span class="action-icon" aria-hidden="true"> 📥 </span>
+
+                <span> Download Evidence </span>
+              </a>
+
+              <!-- Verify -->
+
+              <a
+                href="{{ url_for(
+                  'evidence.verify_evidence',
+                  evidence_id=evidence.id
+                ) }}"
+                class="action-btn verify-btn"
+              >
+                <span class="action-icon" aria-hidden="true"> 🔎 </span>
+
+                <span> Verify Integrity </span>
+              </a>
+
+              <!-- Update -->
+
+              {% if current_user.role == "investigator" and
+              evidence.uploaded_by_id == current_user.id %}
+
+              <a
+                href="{{ url_for(
+                    'evidence.update_evidence',
+                    evidence_id=evidence.id
+                  ) }}"
+                class="action-btn edit-btn"
+              >
+                <span class="action-icon" aria-hidden="true"> ✎ </span>
+
+                <span> Edit Metadata </span>
+              </a>
+
+              {% endif %}
+
+              <!-- Delete -->
+
+              {% if current_user.role == "investigator" and
+              evidence.uploaded_by_id == current_user.id %}
+
+              <form
+                method="POST"
+                action="{{ url_for(
+                    'evidence.delete_evidence',
+                    evidence_id=evidence.id
+                  ) }}"
+                class="delete-form"
+              >
+                <input
+                  type="hidden"
+                  name="csrf_token"
+                  value="{{ csrf_token() }}"
+                />
+
+                <button
+                  type="submit"
+                  class="action-btn delete-btn"
+                  onclick="
+                    return confirm(
+                      'Are you sure you want to delete this evidence?',
+                    );
+                  "
+                >
+                  <span class="action-icon" aria-hidden="true"> 🗑 </span>
+
+                  <span> Delete Evidence </span>
+                </button>
+              </form>
+
+              {% endif %}
+
+              <!-- Back -->
+
+              <a
+                href="{{ url_for('dashboard.dashboard') }}"
+                class="action-btn back-action"
+              >
+                <span class="action-icon" aria-hidden="true"> ← </span>
+
+                <span> Back to Dashboard </span>
+              </a>
+            </div>
+          </section>
+        </section>
+      </main>
+
+      <!-- ==========================================================
+           Footer
+           ========================================================== -->
+
+      <footer class="footer">
+        <span> Secure Evidence Management System </span>
+      </footer>
+    </div>
+  </body>
+</html>
